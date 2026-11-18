@@ -2,10 +2,6 @@
 /vendor/
 /node_modules/
 
-# NPM and Yarn
-package-lock.json
-yarn.lock
-
 # Laravel generated files
 /public/build/
 /public/hot
