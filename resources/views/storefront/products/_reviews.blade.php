@@ -24,7 +24,7 @@
 
     @auth
         @if (auth()->user()->role === 'customer' && $canReview)
-            <form action="{{ route('storefront.products.reviews.store', $product) }}" method="POST" class="review-form">
+            <form action="{{ route('storefront.products.reviews.store', $product->slug) }}" method="POST" class="review-form">
                 @csrf
                 <h3>{{ $userReview ? 'Perbarui ulasan kamu' : 'Bagaimana pengalamanmu dengan produk ini?' }}</h3>
                 <p class="profile-section-help">Ulasan hanya dapat diberikan untuk pesanan yang sudah dibayar dan selesai.</p>
