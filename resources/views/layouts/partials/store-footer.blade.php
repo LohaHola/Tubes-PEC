@@ -24,6 +24,7 @@
                     @if (auth()->user()->role === 'customer')
                         <a href="{{ route('cart.index') }}">Keranjang Belanja</a>
                         <a href="{{ route('customer.orders.index') }}">Pesanan Saya</a>
+                        <a href="{{ route('customer.profile.edit') }}">Profil Saya</a>
                     @elseif (auth()->user()->role === 'admin')
                         <a href="{{ route('admin.dashboard') }}">Admin Workspace</a>
                     @endif

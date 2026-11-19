@@ -6,10 +6,12 @@ use App\Models\Cart;
 use App\Models\CartItem;
 use App\Models\Order;
 use App\Models\Product;
+use App\Services\IndonesiaRegionService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
+use Throwable;
 use Illuminate\View\View;
 
 class CheckoutController extends Controller
@@ -42,7 +44,7 @@ class CheckoutController extends Controller
                     ->with('error', 'Jumlah salah satu produk melebihi stok yang tersedia.');
             }
 
-            $subtotalCents += $this->toCents($product->price) * $item->quantity;
+            $subtotalCents += $this->toCents($product->currentPrice()) * $item->quantity;
         }
 
         $shippingCostCents = (int) config('commerce.shipping_cost', 0) * 100;
@@ -56,7 +58,7 @@ class CheckoutController extends Controller
         ]);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request, IndonesiaRegionService $regions): RedirectResponse
     {
         abort_unless($request->user()->role === 'customer', 403);
 
@@ -65,10 +67,34 @@ class CheckoutController extends Controller
             'recipient_phone' => ['required', 'string', 'max:30'],
             'recipient_address' => ['required', 'string', 'max:2000'],
             'city' => ['required', 'string', 'max:100'],
-            'province' => ['required', 'string', 'max:100'],
+            'province_id' => ['required', 'string', 'max:10'],
             'postal_code' => ['required', 'string', 'max:20'],
             'notes' => ['nullable', 'string', 'max:1000'],
         ]);
+
+        $provinceId = $validated['province_id'];
+        $cityName = $validated['city'];
+
+        try {
+            $province = $regions->provinces()->first(
+                fn (array $item) => $item['id'] === $provinceId
+            );
+            $city = $province ? $regions->findCity($provinceId, $cityName) : null;
+        } catch (Throwable $exception) {
+            throw ValidationException::withMessages([
+                'city' => 'Data wilayah belum dapat diverifikasi. Coba lagi beberapa saat.',
+            ]);
+        }
+
+        if (!$province || !$city) {
+            throw ValidationException::withMessages([
+                'city' => 'Kota/kabupaten tidak sesuai dengan provinsi yang dipilih.',
+            ]);
+        }
+
+        $validated['province'] = $province['name'];
+        $validated['city'] = $city['name'];
+        unset($validated['province_id']);
 
         $order = DB::transaction(function () use ($request, $validated) {
             // Lock cart agar dua checkout dari akun yang sama
@@ -115,7 +141,7 @@ class CheckoutController extends Controller
                 }
 
                 // Gunakan harga terbaru dari database.
-                $unitPriceCents = $this->toCents($product->price);
+                $unitPriceCents = $this->toCents($product->currentPrice());
                 $lineTotalCents = $unitPriceCents * $cartItem->quantity;
 
                 $subtotalCents += $lineTotalCents;

@@ -288,6 +288,17 @@
 
             </a>
 
+            <a href="{{ route('customer.profile.edit') }}"
+               class="customer-action">
+
+                <strong>Profil Saya &rarr;</strong>
+
+                <span>
+                    Perbarui data akun, nomor telepon, dan alamat pengiriman.
+                </span>
+
+            </a>
+
         </div>
 
     </section>
@@ -387,7 +398,10 @@
     {{-- Account Information --}}
     <section class="customer-panel">
 
-        <h2>Informasi Akun</h2>
+        <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:18px; flex-wrap:wrap;">
+            <h2 style="margin:0;">Informasi Akun</h2>
+            <a href="{{ route('customer.profile.edit') }}" class="admin-link">Edit Profil →</a>
+        </div>
 
         <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
 
@@ -399,6 +413,16 @@
             <div>
                 <div class="customer-muted">Alamat Email</div>
                 <strong>{{ $user->email }}</strong>
+            </div>
+
+            <div>
+                <div class="customer-muted">Nomor Telepon</div>
+                <strong>{{ $user->phone ?: 'Belum diisi' }}</strong>
+            </div>
+
+            <div>
+                <div class="customer-muted">Alamat Pengiriman</div>
+                <strong>{{ $user->address ? $user->address . ', ' . ($user->city ?? '') : 'Belum diisi' }}</strong>
             </div>
 
             <div>

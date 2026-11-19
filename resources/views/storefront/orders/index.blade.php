@@ -72,12 +72,12 @@
 
                             <td>
                                 <span class="status-badge {{ $statusClass }}">
-                                    {{ ucfirst($order->payment_status) }}
+                                    {{ match ($order->payment_status) { 'paid' => 'Lunas', 'pending' => 'Menunggu Pembayaran', 'failed' => 'Gagal', 'expired' => 'Kedaluwarsa', 'cancelled' => 'Dibatalkan', 'refunded' => 'Dikembalikan', default => ucfirst($order->payment_status) } }}
                                 </span>
                             </td>
 
                             <td>
-                                {{ ucfirst($order->fulfillment_status) }}
+                                {{ match ($order->fulfillment_status) { 'unprocessed' => 'Belum Diproses', 'processing' => 'Sedang Diproses', 'shipped' => 'Dalam Pengiriman', 'completed' => 'Selesai', 'cancelled' => 'Dibatalkan', default => ucfirst(str_replace('_', ' ', $order->fulfillment_status)) } }}
                             </td>
 
                             <td>

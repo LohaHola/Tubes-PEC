@@ -13,6 +13,12 @@
         <span>Produk</span>
     </a>
 
+    <a href="{{ route('admin.homepage-features.index') }}"
+       class="admin-nav-link {{ request()->routeIs('admin.homepage-features.*') ? 'is-active' : '' }}">
+        <span class="admin-nav-icon" aria-hidden="true">✦</span>
+        <span>Promo & Rekomendasi</span>
+    </a>
+
     <a href="{{ route('admin.categories.index') }}"
        class="admin-nav-link {{ request()->routeIs('admin.categories.*') ? 'is-active' : '' }}">
         <span class="admin-nav-icon" aria-hidden="true">◇</span>
@@ -23,6 +29,12 @@
        class="admin-nav-link {{ request()->routeIs('admin.orders.*') ? 'is-active' : '' }}">
         <span class="admin-nav-icon" aria-hidden="true">▣</span>
         <span>Pesanan</span>
+    </a>
+
+    <a href="{{ route('admin.customers.index') }}"
+       class="admin-nav-link {{ request()->routeIs('admin.customers.*') ? 'is-active' : '' }}">
+        <span class="admin-nav-icon" aria-hidden="true">♙</span>
+        <span>Customer</span>
     </a>
 
     <div class="admin-nav-divider"></div>

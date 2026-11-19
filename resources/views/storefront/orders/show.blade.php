@@ -29,7 +29,7 @@
                 ($order->payment_status === 'pending' ? 'status-pending' :
                 (in_array($order->payment_status, ['failed', 'expired', 'cancelled']) ? 'status-failed' : 'status-other')) }}"
             style="align-self:flex-start;">
-            {{ ucfirst($order->payment_status) }}
+            {{ match ($order->payment_status) { 'paid' => 'Lunas', 'pending' => 'Menunggu Pembayaran', 'failed' => 'Gagal', 'expired' => 'Kedaluwarsa', 'cancelled' => 'Dibatalkan', 'refunded' => 'Dikembalikan', default => ucfirst($order->payment_status) } }}
         </span>
 
     </div>
@@ -39,7 +39,7 @@
         <h2 style="font-size:17px;">Status Pesanan</h2>
 
         <p style="color:#64748b; font-size:14px;">
-            {{ ucfirst($order->fulfillment_status) }}
+            {{ match ($order->fulfillment_status) { 'unprocessed' => 'Belum Diproses', 'processing' => 'Sedang Diproses', 'shipped' => 'Dalam Pengiriman', 'completed' => 'Selesai', 'cancelled' => 'Dibatalkan', default => ucfirst(str_replace('_', ' ', $order->fulfillment_status)) } }}
         </p>
         @if (
             $order->payment_status === 'pending' &&

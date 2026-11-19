@@ -26,12 +26,30 @@
                 @if ($isAdmin)
                     <a href="{{ route('admin.dashboard') }}" class="header-user-name">Admin Workspace</a>
                 @else
-                    <a href="{{ route('dashboard') }}" class="header-user-name">{{ auth()->user()->name }}</a>
+                    <details class="account-menu">
+                        <summary class="account-menu-trigger" aria-label="Buka menu akun" title="Menu akun">
+                            @if (auth()->user()->profile_photo_path)
+                                <img src="{{ asset('storage/' . auth()->user()->profile_photo_path) }}" alt="" class="account-menu-photo">
+                            @else
+                                <span class="account-menu-fallback" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"></circle><path d="M4.5 20c.8-3.5 3.3-5.5 7.5-5.5s6.7 2 7.5 5.5"></path></svg></span>
+                            @endif
+                            <span class="account-menu-chevron" aria-hidden="true">⌄</span>
+                        </summary>
+                        <div class="account-menu-popover">
+                            <div class="account-menu-identity">
+                                <strong>{{ auth()->user()->name }}</strong>
+                                <small>{{ auth()->user()->email }}</small>
+                            </div>
+                            <a href="{{ route('customer.profile.edit') }}" class="{{ request()->routeIs('customer.profile.*') ? 'is-current' : '' }}">
+                                <span aria-hidden="true">◉</span> Profil Saya
+                            </a>
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit"><span aria-hidden="true">↪</span> Keluar</button>
+                            </form>
+                        </div>
+                    </details>
                 @endif
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="button button-light button-logout">Keluar</button>
-                </form>
             @else
                 <a href="{{ route('login') }}" class="header-user-name">Masuk</a>
                 <a href="{{ route('register') }}" class="button">Daftar</a>

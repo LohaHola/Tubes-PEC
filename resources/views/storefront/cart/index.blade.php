@@ -37,6 +37,14 @@
 
 @else
 
+    @php
+        $cartReady = $cart->items->every(fn ($item) =>
+            $item->product &&
+            $item->product->is_active &&
+            $item->product->stock >= $item->quantity
+        );
+    @endphp
+
     <div style="display:grid; grid-template-columns:minmax(0, 1fr) 310px; gap:22px; align-items:start;">
 
         <section style="display:flex; flex-direction:column; gap:15px;">
@@ -83,7 +91,7 @@
                             </h3>
 
                             <strong style="font-size:16px;">
-                                Rp {{ number_format((float) $product->price, 0, ',', '.') }}
+                                Rp {{ number_format((float) $product->currentPrice(), 0, ',', '.') }}
                             </strong>
 
                             @if (!$product->is_active)
@@ -207,11 +215,21 @@
                     Lanjut Belanja
                 </a>
 
-                <a href="{{ route('checkout.index') }}"
-                class="store-button"
-                style="display:block; text-align:center; margin-top:12px;">
-                    Lanjut ke Checkout
-                </a>
+                @if ($cartReady)
+                    <a href="{{ route('checkout.index') }}"
+                       class="store-button"
+                       style="display:block; text-align:center; margin-top:12px;">
+                        Lanjut ke Checkout
+                    </a>
+                @else
+                    <button type="button" class="store-button checkout-disabled" disabled
+                            style="display:block; width:100%; margin-top:12px;">
+                        Periksa Keranjang Dahulu
+                    </button>
+                    <p style="font-size:12px; color:#b91c1c; line-height:1.5; margin-top:10px;">
+                        Perbaiki jumlah atau hapus produk yang tidak tersedia sebelum checkout.
+                    </p>
+                @endif
 
             </div>
 

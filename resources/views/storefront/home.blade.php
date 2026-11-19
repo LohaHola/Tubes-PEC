@@ -23,6 +23,62 @@
     </div>
 </section>
 
+
+@if ($promotions->isNotEmpty())
+    <section class="home-section">
+        @if ($promotions->first()->section_title)
+            <div class="section-heading"><div><h2>{{ $promotions->first()->section_title }}</h2></div></div>
+        @endif
+        <div class="product-grid">
+            @foreach ($promotions as $feature)
+                <a href="{{ route('storefront.products.show', $feature->product->slug) }}" class="product-card">
+                    @if ($feature->product->image_path)
+                        <img class="product-image" src="{{ asset('storage/' . $feature->product->image_path) }}" alt="{{ $feature->product->name }}" loading="lazy">
+                    @else
+                        <div class="image-placeholder">Gambar belum tersedia</div>
+                    @endif
+                    <div class="product-info">
+                        <div class="product-category">{{ $feature->item_title ?: 'PROMO' }}</div>
+                        <h3 class="product-name">{{ $feature->product->name }}</h3>
+                        @if ($feature->description)<p class="section-subtitle">{{ $feature->description }}</p>@endif
+                        @if ($feature->promo_price !== null)
+                            <div><s>Rp {{ number_format((float) $feature->product->price, 0, ',', '.') }}</s></div>
+                            <div class="product-price">Rp {{ number_format((float) $feature->promo_price, 0, ',', '.') }}</div>
+                        @else
+                            <div class="product-price">Rp {{ number_format((float) $feature->product->price, 0, ',', '.') }}</div>
+                        @endif
+                    </div>
+                </a>
+            @endforeach
+        </div>
+    </section>
+@endif
+
+@if ($recommendations->isNotEmpty())
+    <section class="home-section">
+        @if ($recommendations->first()->section_title)
+            <div class="section-heading"><div><h2>{{ $recommendations->first()->section_title }}</h2></div></div>
+        @endif
+        <div class="product-grid">
+            @foreach ($recommendations as $feature)
+                <a href="{{ route('storefront.products.show', $feature->product->slug) }}" class="product-card">
+                    @if ($feature->product->image_path)
+                        <img class="product-image" src="{{ asset('storage/' . $feature->product->image_path) }}" alt="{{ $feature->product->name }}" loading="lazy">
+                    @else
+                        <div class="image-placeholder">Gambar belum tersedia</div>
+                    @endif
+                    <div class="product-info">
+                        <div class="product-category">{{ $feature->item_title ?: 'REKOMENDASI' }}</div>
+                        <h3 class="product-name">{{ $feature->product->name }}</h3>
+                        @if ($feature->description)<p class="section-subtitle">{{ $feature->description }}</p>@endif
+                        <div class="product-price">Rp {{ number_format((float) $feature->product->price, 0, ',', '.') }}</div>
+                    </div>
+                </a>
+            @endforeach
+        </div>
+    </section>
+@endif
+
 <section class="home-section" id="kategori">
     <div class="section-heading">
         <div>
