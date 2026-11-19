@@ -87,7 +87,7 @@
                         <strong>{{ $item->product->name }}</strong>
                         <small>{{ $item->quantity }} × Rp {{ number_format((float) $item->product->currentPrice(), 0, ',', '.') }}</small>
                     </div>
-                    <strong>Rp {{ number_format((float) $item->product->price * $item->quantity, 0, ',', '.') }}</strong>
+                    <strong>Rp {{ number_format((float) $item->product->currentPrice() * $item->quantity, 0, ',', '.') }}</strong>
                 </div>
             @endforeach
             <div class="checkout-total-line"><span>Subtotal</span><strong>Rp {{ number_format((float) $subtotal, 0, ',', '.') }}</strong></div>
