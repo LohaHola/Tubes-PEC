@@ -12,7 +12,13 @@ class StorefrontController extends Controller
     public function index(): View
     {
         $categories = Category::orderBy('name')->get();
-        $products = Product::with('category')->where('is_active', true)->latest()->take(8)->get();
+        $products = Product::with('category')
+            ->withAvg('reviews', 'rating')
+            ->withCount('reviews')
+            ->where('is_active', true)
+            ->latest()
+            ->take(8)
+            ->get();
 
         return view('storefront.home', compact('categories', 'products'));
     }
@@ -24,7 +30,10 @@ class StorefrontController extends Controller
             'category' => ['nullable', 'integer', 'exists:categories,id'],
         ]);
 
-        $query = Product::with('category')->where('is_active', true);
+        $query = Product::with('category')
+            ->withAvg('reviews', 'rating')
+            ->withCount('reviews')
+            ->where('is_active', true);
 
         if (!empty($validated['q'])) {
             $search = $validated['q'];
@@ -52,6 +61,8 @@ class StorefrontController extends Controller
         $product->load(['category', 'specifications']);
 
         $relatedProducts = Product::with('category')
+            ->withAvg('reviews', 'rating')
+            ->withCount('reviews')
             ->where('is_active', true)
             ->where('category_id', $product->category_id)
             ->where('id', '!=', $product->id)
@@ -59,11 +70,7 @@ class StorefrontController extends Controller
             ->take(4)
             ->get();
 
-        $reviews = $product->reviews()
-            ->with('user')
-            ->latest()
-            ->paginate(5, ['*'], 'reviews_page');
-
+        $reviews = $product->reviews()->with('user')->latest()->paginate(5, ['*'], 'reviews_page');
         $reviewCount = $product->reviews()->count();
         $reviewAverage = (float) ($product->reviews()->avg('rating') ?? 0);
 
@@ -71,10 +78,7 @@ class StorefrontController extends Controller
         $canReview = false;
 
         if (auth()->check() && auth()->user()->role === 'customer') {
-            $userReview = $product->reviews()
-                ->where('user_id', auth()->id())
-                ->first();
-
+            $userReview = $product->reviews()->where('user_id', auth()->id())->first();
             $canReview = auth()->user()->orders()
                 ->where('payment_status', 'paid')
                 ->where('fulfillment_status', 'completed')
