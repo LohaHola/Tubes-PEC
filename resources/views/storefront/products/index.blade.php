@@ -74,9 +74,50 @@
         @endforeach
     </div>
 
-    <div class="pagination-wrapper">
-        {{ $products->links() }}
-    </div>
+    <nav class="catalog-pagination" aria-label="Navigasi halaman katalog">
+        <div class="catalog-pagination-summary">
+            <span class="catalog-pagination-label">Halaman</span>
+            <strong>{{ $products->currentPage() }}</strong>
+            <span>dari</span>
+            <strong>{{ $products->lastPage() }}</strong>
+        </div>
+
+        <div class="catalog-pagination-controls">
+            @if ($products->onFirstPage())
+                <span class="catalog-page-button is-disabled" aria-disabled="true">
+                    <span class="catalog-page-arrow" aria-hidden="true">←</span>
+                    <span class="catalog-page-label">Sebelumnya</span>
+                </span>
+            @else
+                <a class="catalog-page-button" href="{{ $products->previousPageUrl() }}" rel="prev">
+                    <span class="catalog-page-arrow" aria-hidden="true">←</span>
+                    <span class="catalog-page-label">Sebelumnya</span>
+                </a>
+            @endif
+
+            <div class="catalog-page-numbers" aria-label="Pilih halaman">
+                @for ($page = 1; $page <= $products->lastPage(); $page++)
+                    @if ($page === $products->currentPage())
+                        <span class="catalog-page-number is-current" aria-current="page">{{ $page }}</span>
+                    @else
+                        <a class="catalog-page-number" href="{{ $products->url($page) }}" aria-label="Halaman {{ $page }}">{{ $page }}</a>
+                    @endif
+                @endfor
+            </div>
+
+            @if ($products->hasMorePages())
+                <a class="catalog-page-button catalog-page-next" href="{{ $products->nextPageUrl() }}" rel="next">
+                    <span class="catalog-page-label">Berikutnya</span>
+                    <span class="catalog-page-arrow" aria-hidden="true">→</span>
+                </a>
+            @else
+                <span class="catalog-page-button catalog-page-next is-disabled" aria-disabled="true">
+                    <span>Berikutnya</span>
+                    <span aria-hidden="true">→</span>
+                </span>
+            @endif
+        </div>
+    </nav>
 
 @else
 
