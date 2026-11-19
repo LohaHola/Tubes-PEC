@@ -1,4 +1,3 @@
-
 <?php
 
 use App\Http\Controllers\AuthController;
@@ -9,6 +8,7 @@ use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 
 // Public Storefront
 Route::get('/', [StorefrontController::class, 'index'])
@@ -94,5 +94,7 @@ Route::middleware('auth')->group(function () {
 
             Route::resource('products', ProductController::class)
                 ->except(['show']);
+            Route::resource('orders', AdminOrderController::class)
+                ->only(['index', 'show', 'update']);
         });
 });

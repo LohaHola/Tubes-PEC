@@ -366,6 +366,14 @@
                 <span>Buka katalog yang dapat dilihat pelanggan.</span>
             </a>
 
+            <a href="{{ route('admin.orders.index') }}"
+                class="quick-action">
+                    <strong>Kelola Pesanan &rarr;</strong>
+                    <span>
+                        Periksa pesanan pelanggan dan proses pengirimannya.
+                    </span>
+                </a>
+
         </div>
     </section>
 
