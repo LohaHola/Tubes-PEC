@@ -5,10 +5,10 @@
 @section('content')
 <div class="auth-card">
 
-    <h1>Create Account</h1>
+    <h1>Buat Akun</h1>
 
     <p class="subtitle">
-        Buat akun customer untuk mulai menggunakan Arbyte.
+        Daftar untuk mulai berbelanja dan melacak pesanan di Arbyte.
     </p>
 
     @if ($errors->any())
