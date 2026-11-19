@@ -4,6 +4,8 @@
 
 @section('content')
 
+@include('layouts.partials.back-link', ['href' => route('customer.dashboard'), 'label' => 'Kembali ke Dashboard'])
+
 <h1>Pesanan Saya</h1>
 
 <p style="color:#77808e; margin-bottom:25px;">

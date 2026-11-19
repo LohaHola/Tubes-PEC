@@ -4,6 +4,8 @@
 
 @section('content')
 
+@include('layouts.partials.back-link', ['href' => route('storefront.products.index'), 'label' => 'Kembali ke Katalog'])
+
 <div style="margin-bottom:30px;">
     <h1 style="margin-bottom:8px;">Keranjang Belanja</h1>
 
@@ -11,12 +13,6 @@
         Periksa kembali produk yang ingin kamu beli.
     </p>
 </div>
-
-@if (session('status'))
-    <div class="alert">
-        {{ session('status') }}
-    </div>
-@endif
 
 @if ($errors->any())
     <div class="alert" style="background:#fee2e2; color:#991b1b;">

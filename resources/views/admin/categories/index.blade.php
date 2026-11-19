@@ -3,6 +3,8 @@
 @section('title', 'Kelola Kategori - TubesPEC')
 
 @section('content')
+
+@include('layouts.partials.back-link', ['href' => route('admin.dashboard'), 'label' => 'Kembali ke Dashboard'])
 <div class="dashboard-card">
 
     <div style="display:flex; justify-content:space-between; align-items:center; gap:15px; margin-bottom:25px;">

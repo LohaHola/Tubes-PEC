@@ -168,11 +168,6 @@
     </section>
 @endif
 
-<div style="margin-top:35px;">
-    <a href="{{ route('storefront.products.index') }}"
-       class="store-button button-light">
-        &larr; Kembali ke Katalog
-    </a>
-</div>
+@include('layouts.partials.back-link', ['href' => route('storefront.products.index'), 'label' => 'Kembali ke Katalog'])
 
 @endsection

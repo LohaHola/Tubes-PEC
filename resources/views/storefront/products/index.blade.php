@@ -4,6 +4,8 @@
 
 @section('content')
 
+@include('layouts.partials.back-link', ['href' => route('home'), 'label' => 'Kembali ke Beranda'])
+
 <div class="section-heading" style="margin-top:0;">
     <div>
         <h1 style="margin:0;">Katalog Produk</h1>

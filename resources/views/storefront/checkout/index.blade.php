@@ -4,6 +4,8 @@
 
 @section('content')
 
+@include('layouts.partials.back-link', ['href' => route('cart.index'), 'label' => 'Kembali ke Keranjang'])
+
 <div style="margin-bottom:28px;">
     <h1 style="margin-bottom:8px;">Checkout</h1>
     <p style="color:#77808e;">
