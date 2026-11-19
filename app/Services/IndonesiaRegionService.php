@@ -9,19 +9,27 @@ use RuntimeException;
 
 class IndonesiaRegionService
 {
-    private const API_BASE = 'https://www.emsifa.com/api-wilayah-indonesia/v2';
+    private const API_BASE = 'https://wilayah.id/api';
 
     public function provinces(): Collection
     {
         return Cache::remember('indonesia-regions.provinces', now()->addDays(7), function () {
-            $response = Http::acceptJson()->timeout(8)->get(self::API_BASE . '/provinces.json');
+            $response = Http::acceptJson()
+                ->timeout(12)
+                ->retry(2, 250)
+                ->get(self::API_BASE . '/provinces.json');
 
-            if (!$response->successful() || !is_array($response->json('data'))) {
+            $items = $response->json('data');
+
+            if (!$response->successful() || !is_array($items)) {
                 throw new RuntimeException('Data provinsi tidak dapat dimuat.');
             }
 
-            return collect($response->json('data'))
-                ->map(fn (array $item) => ['id' => (string) $item['id'], 'name' => (string) $item['name']])
+            return collect($items)
+                ->map(fn (array $item) => [
+                    'id' => (string) $item['code'],
+                    'name' => (string) $item['name'],
+                ])
                 ->values();
         });
     }
@@ -29,14 +37,22 @@ class IndonesiaRegionService
     public function cities(string $provinceId): Collection
     {
         return Cache::remember('indonesia-regions.cities.' . $provinceId, now()->addDays(7), function () use ($provinceId) {
-            $response = Http::acceptJson()->timeout(8)->get(self::API_BASE . '/regencies/' . rawurlencode($provinceId) . '.json');
+            $response = Http::acceptJson()
+                ->timeout(12)
+                ->retry(2, 250)
+                ->get(self::API_BASE . '/regencies/' . rawurlencode($provinceId) . '.json');
 
-            if (!$response->successful() || !is_array($response->json())) {
+            $items = $response->json('data');
+
+            if (!$response->successful() || !is_array($items)) {
                 throw new RuntimeException('Data kota/kabupaten tidak dapat dimuat.');
             }
 
-            return collect($response->json())
-                ->map(fn (array $item) => ['id' => (string) $item['id'], 'name' => (string) $item['name']])
+            return collect($items)
+                ->map(fn (array $item) => [
+                    'id' => (string) $item['code'],
+                    'name' => (string) $item['name'],
+                ])
                 ->values();
         });
     }
