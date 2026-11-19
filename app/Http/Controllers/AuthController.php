@@ -107,6 +107,7 @@ class AuthController extends Controller
             'total_orders' => Order::count(),
             'pending_payments' => Order::where('payment_status', 'pending')->count(),
             'paid_orders' => (clone $paidOrders)->count(),
+            'paid_unprocessed_orders' => (clone $paidOrders)->where('fulfillment_status', 'unprocessed')->count(),
             'processing_orders' => Order::where('fulfillment_status', 'processing')->count(),
             'shipped_orders' => Order::where('fulfillment_status', 'shipped')->count(),
             'completed_orders' => Order::where('fulfillment_status', 'completed')->count(),
@@ -145,7 +146,7 @@ class AuthController extends Controller
 
         $orderTracker = [
             ['label' => 'Menunggu pembayaran', 'count' => $stats['pending_payments'], 'tone' => 'amber'],
-            ['label' => 'Sudah dibayar', 'count' => max(0, $stats['paid_orders'] - $stats['processing_orders'] - $stats['shipped_orders'] - $stats['completed_orders']), 'tone' => 'blue'],
+            ['label' => 'Sudah dibayar', 'count' => $stats['paid_unprocessed_orders'], 'tone' => 'blue'],
             ['label' => 'Sedang diproses', 'count' => $stats['processing_orders'], 'tone' => 'violet'],
             ['label' => 'Dalam pengiriman', 'count' => $stats['shipped_orders'], 'tone' => 'cyan'],
             ['label' => 'Selesai', 'count' => $stats['completed_orders'], 'tone' => 'green'],
