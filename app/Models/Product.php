@@ -37,9 +37,14 @@ class Product extends Model
             'is_active' => 'boolean',
         ];
     }
+
     public function specifications(): HasMany
     {
-        return $this->hasMany(ProductSpecification::class)
-            ->orderBy('sort_order');
+        return $this->hasMany(ProductSpecification::class)->orderBy('sort_order');
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(ProductReview::class);
     }
 }
