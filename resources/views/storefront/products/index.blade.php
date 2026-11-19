@@ -85,13 +85,13 @@
         <div class="catalog-pagination-controls">
             @if ($products->onFirstPage())
                 <span class="catalog-page-button is-disabled" aria-disabled="true">
-                    <span aria-hidden="true">←</span>
-                    <span>Sebelumnya</span>
+                    <span class="catalog-page-arrow" aria-hidden="true">←</span>
+                    <span class="catalog-page-label">Sebelumnya</span>
                 </span>
             @else
                 <a class="catalog-page-button" href="{{ $products->previousPageUrl() }}" rel="prev">
-                    <span aria-hidden="true">←</span>
-                    <span>Sebelumnya</span>
+                    <span class="catalog-page-arrow" aria-hidden="true">←</span>
+                    <span class="catalog-page-label">Sebelumnya</span>
                 </a>
             @endif
 
@@ -107,8 +107,8 @@
 
             @if ($products->hasMorePages())
                 <a class="catalog-page-button catalog-page-next" href="{{ $products->nextPageUrl() }}" rel="next">
-                    <span>Berikutnya</span>
-                    <span aria-hidden="true">→</span>
+                    <span class="catalog-page-label">Berikutnya</span>
+                    <span class="catalog-page-arrow" aria-hidden="true">→</span>
                 </a>
             @else
                 <span class="catalog-page-button catalog-page-next is-disabled" aria-disabled="true">
