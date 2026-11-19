@@ -807,7 +807,7 @@ input, select, textarea { accent-color: var(--tp-blue); }
 .account-menu-identity { display:flex; flex-direction:column; gap:4px; padding:11px 12px 13px; border-bottom:1px solid #EEF2F6; margin-bottom:6px; }
 .account-menu-identity strong { overflow:hidden; color:#0B1F3A; font-size:13px; text-overflow:ellipsis; white-space:nowrap; }
 .account-menu-identity small { overflow:hidden; color:#8190A3; font-size:11px; text-overflow:ellipsis; white-space:nowrap; }
-.account-menu-popover > a, .account-menu-popover form button { display:flex; width:100%; min-height:42px; align-items:center; gap:11px; padding:10px 12px; border:0; border-radius:9px; background:transparent; color:#34465D; font:600 12px inherit; text-align:left; text-decoration:none; cursor:pointer; }
+.account-menu-popover > a, .account-menu-popover form button { display:flex; width:100%; min-height:42px; align-items:center; gap:11px; padding:10px 12px; border:0; border-radius:9px; background:transparent; color:#34465D; font:inherit; font-size:12px; font-weight:600; text-align:left; text-decoration:none; cursor:pointer; }
 .account-menu-popover > a:hover { background:#F1F6FC; color:#174B83; }
 .account-menu-popover > a.is-current { background:#EDF4FD; color:#174B83; }
 .account-menu-popover form button { color:#B42332; }
