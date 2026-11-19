@@ -6,10 +6,6 @@
 
 @include('layouts.partials.back-link', ['href' => route('customer.orders.index'), 'label' => 'Kembali ke Pesanan Saya'])
 
-@if (session('status'))
-    <div class="alert">{{ session('status') }}</div>
-@endif
-
 <div style="background:white; border:1px solid #e7eaf0; border-radius:11px; padding:24px; margin-bottom:20px;">
 
     <div style="display:flex; justify-content:space-between; gap:15px; flex-wrap:wrap;">
