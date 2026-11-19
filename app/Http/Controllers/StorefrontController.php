@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\HomepageProductFeature;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -12,6 +13,8 @@ class StorefrontController extends Controller
     public function index(): View
     {
         $categories = Category::orderBy('name')->get();
+        $promotions = HomepageProductFeature::with('product.category')->visible()->where('type', 'promo')->orderBy('sort_order')->get();
+        $recommendations = HomepageProductFeature::with('product.category')->visible()->where('type', 'recommendation')->orderBy('sort_order')->get();
         $products = Product::with('category')
             ->withAvg('reviews', 'rating')
             ->withCount('reviews')
