@@ -12,17 +12,9 @@ class StorefrontController extends Controller
     public function index(): View
     {
         $categories = Category::orderBy('name')->get();
+        $products = Product::with('category')->where('is_active', true)->latest()->take(8)->get();
 
-        $products = Product::with('category')
-            ->where('is_active', true)
-            ->latest()
-            ->take(8)
-            ->get();
-
-        return view('storefront.home', compact(
-            'categories',
-            'products'
-        ));
+        return view('storefront.home', compact('categories', 'products'));
     }
 
     public function products(Request $request): View
@@ -32,12 +24,10 @@ class StorefrontController extends Controller
             'category' => ['nullable', 'integer', 'exists:categories,id'],
         ]);
 
-        $query = Product::with('category')
-            ->where('is_active', true);
+        $query = Product::with('category')->where('is_active', true);
 
         if (!empty($validated['q'])) {
             $search = $validated['q'];
-
             $query->where(function ($builder) use ($search) {
                 $builder->where('name', 'like', "%{$search}%")
                     ->orWhere('sku', 'like', "%{$search}%")
@@ -49,16 +39,10 @@ class StorefrontController extends Controller
             $query->where('category_id', $validated['category']);
         }
 
-        $products = $query->latest()
-            ->paginate(12)
-            ->withQueryString();
-
+        $products = $query->latest()->paginate(12)->withQueryString();
         $categories = Category::orderBy('name')->get();
 
-        return view('storefront.products.index', compact(
-            'products',
-            'categories'
-        ));
+        return view('storefront.products.index', compact('products', 'categories'));
     }
 
     public function show(Product $product): View
@@ -75,9 +59,39 @@ class StorefrontController extends Controller
             ->take(4)
             ->get();
 
+        $reviews = $product->reviews()
+            ->with('user')
+            ->latest()
+            ->paginate(5, ['*'], 'reviews_page');
+
+        $reviewCount = $product->reviews()->count();
+        $reviewAverage = (float) ($product->reviews()->avg('rating') ?? 0);
+
+        $userReview = null;
+        $canReview = false;
+
+        if (auth()->check() && auth()->user()->role === 'customer') {
+            $userReview = $product->reviews()
+                ->where('user_id', auth()->id())
+                ->first();
+
+            $canReview = auth()->user()->orders()
+                ->where('payment_status', 'paid')
+                ->where('fulfillment_status', 'completed')
+                ->whereHas('items', function ($query) use ($product) {
+                    $query->where('product_id', $product->id);
+                })
+                ->exists();
+        }
+
         return view('storefront.products.show', compact(
             'product',
-            'relatedProducts'
+            'relatedProducts',
+            'reviews',
+            'reviewCount',
+            'reviewAverage',
+            'userReview',
+            'canReview'
         ));
     }
 }
