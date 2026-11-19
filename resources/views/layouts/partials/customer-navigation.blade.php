@@ -26,7 +26,7 @@
                 @if ($isAdmin)
                     <a href="{{ route('admin.dashboard') }}" class="header-user-name">Admin Workspace</a>
                 @else
-                    <a href="{{ route('dashboard') }}" class="header-user-name">{{ auth()->user()->name }}</a>
+                    <a href="{{ route('customer.profile.edit') }}" class="header-user-name {{ request()->routeIs('customer.profile.*') ? 'is-active' : '' }}">{{ auth()->user()->name }}</a>
                 @endif
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf
