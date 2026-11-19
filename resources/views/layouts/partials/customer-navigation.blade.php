@@ -18,7 +18,6 @@
             @if ($isCustomer)
                 <a href="{{ route('cart.index') }}" class="{{ request()->routeIs('cart.*') ? 'is-active' : '' }}">Keranjang</a>
                 <a href="{{ route('customer.orders.index') }}" class="{{ request()->routeIs('customer.orders.*') ? 'is-active' : '' }}">Pesanan</a>
-                <a href="{{ route('customer.profile.edit') }}" class="{{ request()->routeIs('customer.profile.*') ? 'is-active' : '' }}">Profil</a>
             @endif
         </nav>
 
@@ -27,12 +26,30 @@
                 @if ($isAdmin)
                     <a href="{{ route('admin.dashboard') }}" class="header-user-name">Admin Workspace</a>
                 @else
-                    <a href="{{ route('customer.profile.edit') }}" class="header-user-name {{ request()->routeIs('customer.profile.*') ? 'is-active' : '' }}">{{ auth()->user()->name }}</a>
+                    <details class="account-menu">
+                        <summary class="account-menu-trigger" aria-label="Buka menu akun" title="Menu akun">
+                            @if (auth()->user()->profile_photo_path)
+                                <img src="{{ asset('storage/' . auth()->user()->profile_photo_path) }}" alt="" class="account-menu-photo">
+                            @else
+                                <span class="account-menu-fallback">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                            @endif
+                            <span class="account-menu-chevron" aria-hidden="true">⌄</span>
+                        </summary>
+                        <div class="account-menu-popover">
+                            <div class="account-menu-identity">
+                                <strong>{{ auth()->user()->name }}</strong>
+                                <small>{{ auth()->user()->email }}</small>
+                            </div>
+                            <a href="{{ route('customer.profile.edit') }}" class="{{ request()->routeIs('customer.profile.*') ? 'is-current' : '' }}">
+                                <span aria-hidden="true">◉</span> Profil Saya
+                            </a>
+                            <form action="{{ route('logout') }}" method="POST">
+                                @csrf
+                                <button type="submit"><span aria-hidden="true">↪</span> Keluar</button>
+                            </form>
+                        </div>
+                    </details>
                 @endif
-                <form action="{{ route('logout') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="button button-light button-logout">Keluar</button>
-                </form>
             @else
                 <a href="{{ route('login') }}" class="header-user-name">Masuk</a>
                 <a href="{{ route('register') }}" class="button">Daftar</a>
