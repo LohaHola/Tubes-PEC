@@ -5,10 +5,10 @@
 @section('content')
 <div class="auth-card">
 
-    <h1>Welcome Back</h1>
+    <h1>Selamat Datang Kembali</h1>
 
     <p class="subtitle">
-        Login untuk melanjutkan ke akun Arbyte.
+        Masuk ke akun Arbyte untuk melanjutkan belanja.
     </p>
 
     @if ($errors->any())
@@ -50,7 +50,7 @@
 
         <label class="checkbox-group">
             <input type="checkbox" name="remember" value="1">
-            Remember me
+            Ingat saya
         </label>
 
         <button type="submit" class="button button-primary">
