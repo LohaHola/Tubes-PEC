@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\StorefrontController;
 use App\Http\Controllers\CartController;
@@ -66,7 +67,10 @@ Route::middleware('auth')->group(function () {
     // Admin Routes
     Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
         Route::get('/dashboard', [AuthController::class, 'adminDashboard'])->name('dashboard');
-        Route::resource('categories', CategoryController::class)->except(['show']);\n        Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');\n        Route::get('/customers/{user}', [CustomerController::class, 'show'])->name('customers.show');\n        Route::patch('/customers/{user}', [CustomerController::class, 'update'])->name('customers.update');
+        Route::resource('categories', CategoryController::class)->except(['show']);
+        Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
+        Route::get('/customers/{user}', [CustomerController::class, 'show'])->name('customers.show');
+        Route::patch('/customers/{user}', [CustomerController::class, 'update'])->name('customers.update');
         Route::resource('products', ProductController::class)->except(['show']);
         Route::resource('orders', AdminOrderController::class)->only(['index', 'show', 'update']);
     });
