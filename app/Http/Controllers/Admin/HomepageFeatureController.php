@@ -9,6 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class HomepageFeatureController extends Controller
 {
@@ -85,5 +86,16 @@ class HomepageFeatureController extends Controller
             'sort_order' => ['nullable', 'integer', 'min:0', 'max:9999'],
             'is_active' => ['nullable', 'boolean'],
         ]);
+
+        if (($data['type'] ?? null) === 'promo' && isset($data['promo_price'])) {
+            $product = Product::find($data['product_id']);
+            if ($product && (float) $data['promo_price'] >= (float) $product->price) {
+                throw ValidationException::withMessages([
+                    'promo_price' => 'Harga promo harus lebih rendah dari harga normal produk.',
+                ]);
+            }
+        }
+
+        return $data;
     }
 }
