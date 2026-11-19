@@ -74,7 +74,7 @@
             <div class="section-subtitle">Hal penting yang membantu kamu memilih perangkat dengan lebih percaya diri.</div>
         </div>
     </div>
-    <div class="product-grid" style="grid-template-columns:repeat(3,minmax(0,1fr));">
+    <div class="trust-grid">
         <article class="dashboard-card">
             <div class="product-category">01 / PRODUCT INFO</div>
             <h3>Spesifikasi terstruktur</h3>
