@@ -28,7 +28,7 @@ class CartController extends Controller
                 return 0;
             }
 
-            return (float) $item->product->price * $item->quantity;
+            return (float) $item->product->currentPrice() * $item->quantity;
         });
 
         return view('storefront.cart.index', compact(
