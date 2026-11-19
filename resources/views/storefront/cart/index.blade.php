@@ -14,12 +14,6 @@
     </p>
 </div>
 
-@if (session('status'))
-    <div class="alert">
-        {{ session('status') }}
-    </div>
-@endif
-
 @if ($errors->any())
     <div class="alert" style="background:#fee2e2; color:#991b1b;">
         {{ $errors->first() }}
