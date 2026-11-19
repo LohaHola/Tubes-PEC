@@ -4,11 +4,6 @@
 
 @section('content')
 <section class="hero-ecosystem">
-    <div class="hero-motion" aria-hidden="true">
-        <div class="hero-tech-orbit hero-tech-orbit-one"><span>AI / COMPUTE</span></div>
-        <div class="hero-tech-orbit hero-tech-orbit-two"><span>GPU / PERFORMANCE</span></div>
-        <div class="hero-tech-orbit hero-tech-orbit-three"><span>CONNECTED / DIGITAL</span></div>
-    </div>
     <div class="hero-copy">
         <div class="hero-eyebrow">Technology ecosystem</div>
         <h1>Temukan perangkat yang tepat untuk duniamu.</h1>
