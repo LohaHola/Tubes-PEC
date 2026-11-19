@@ -994,6 +994,7 @@ input, select, textarea { accent-color: var(--tp-blue); }
     overflow:hidden;
     pointer-events:none;
     background:
+        linear-gradient(90deg, rgba(11,31,58,.82) 0%, rgba(11,31,58,.60) 46%, rgba(11,31,58,.24) 100%),
         radial-gradient(ellipse at 77% 48%, rgba(37,99,235,.30), transparent 38%),
         radial-gradient(ellipse at 90% 12%, rgba(56,189,248,.20), transparent 31%);
 }
