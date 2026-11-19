@@ -44,7 +44,7 @@ class CheckoutController extends Controller
                     ->with('error', 'Jumlah salah satu produk melebihi stok yang tersedia.');
             }
 
-            $subtotalCents += $this->toCents($product->price) * $item->quantity;
+            $subtotalCents += $this->toCents($product->currentPrice()) * $item->quantity;
         }
 
         $shippingCostCents = (int) config('commerce.shipping_cost', 0) * 100;
@@ -141,7 +141,7 @@ class CheckoutController extends Controller
                 }
 
                 // Gunakan harga terbaru dari database.
-                $unitPriceCents = $this->toCents($product->price);
+                $unitPriceCents = $this->toCents($product->currentPrice());
                 $lineTotalCents = $unitPriceCents * $cartItem->quantity;
 
                 $subtotalCents += $lineTotalCents;
