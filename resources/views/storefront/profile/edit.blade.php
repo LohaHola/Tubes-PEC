@@ -1,0 +1,85 @@
+@extends('layouts.storefront')
+
+@section('title', 'Profil Saya - Arbyte')
+
+@section('content')
+@include('layouts.partials.back-link', ['href' => route('customer.dashboard'), 'label' => 'Kembali ke Dashboard'])
+
+<div class="profile-page">
+    <div class="profile-heading">
+        <div>
+            <div class="product-category">AKUN CUSTOMER</div>
+            <h1>Profil Saya</h1>
+            <p>Perbarui informasi akun dan alamat yang biasa digunakan untuk pengiriman.</p>
+        </div>
+        <div class="profile-avatar" aria-hidden="true">{{ strtoupper(substr($user->name, 0, 1)) }}</div>
+    </div>
+
+    @if ($errors->any())
+        <div class="alert alert-error">
+            <strong>Periksa kembali data yang kamu masukkan.</strong>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <form action="{{ route('customer.profile.update') }}" method="POST" class="profile-form">
+        @csrf
+        @method('PATCH')
+
+        <section class="profile-section">
+            <h2>Informasi Akun</h2>
+            <p class="profile-section-help">Informasi ini digunakan untuk mengenali akun kamu.</p>
+
+            <div class="profile-fields">
+                <div class="form-group">
+                    <label for="name">Nama lengkap</label>
+                    <input id="name" name="name" value="{{ old('name', $user->name) }}" autocomplete="name" required maxlength="255">
+                </div>
+                <div class="form-group">
+                    <label for="email">Alamat email</label>
+                    <input id="email" type="email" name="email" value="{{ old('email', $user->email) }}" autocomplete="email" required maxlength="255">
+                    <small>Email digunakan untuk masuk ke akun.</small>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Nomor telepon</label>
+                    <input id="phone" type="tel" name="phone" value="{{ old('phone', $user->phone) }}" autocomplete="tel" placeholder="Contoh: 081234567890" maxlength="30">
+                </div>
+            </div>
+        </section>
+
+        <section class="profile-section">
+            <h2>Alamat Pengiriman</h2>
+            <p class="profile-section-help">Simpan alamat agar kamu tidak perlu mengisinya dari awal setiap checkout.</p>
+
+            <div class="form-group">
+                <label for="address">Alamat lengkap</label>
+                <textarea id="address" name="address" rows="3" autocomplete="street-address" maxlength="2000" placeholder="Nama jalan, nomor rumah, kelurahan, kecamatan...">{{ old('address', $user->address) }}</textarea>
+            </div>
+
+            <div class="profile-fields">
+                <div class="form-group">
+                    <label for="city">Kota/Kabupaten</label>
+                    <input id="city" name="city" value="{{ old('city', $user->city) }}" autocomplete="address-level2" maxlength="100">
+                </div>
+                <div class="form-group">
+                    <label for="province">Provinsi</label>
+                    <input id="province" name="province" value="{{ old('province', $user->province) }}" autocomplete="address-level1" maxlength="100">
+                </div>
+                <div class="form-group">
+                    <label for="postal_code">Kode pos</label>
+                    <input id="postal_code" name="postal_code" value="{{ old('postal_code', $user->postal_code) }}" autocomplete="postal-code" maxlength="20">
+                </div>
+            </div>
+        </section>
+
+        <div class="profile-actions">
+            <a href="{{ route('customer.dashboard') }}" class="store-button button-light">Batal</a>
+            <button type="submit" class="store-button">Simpan Perubahan</button>
+        </div>
+    </form>
+</div>
+@endsection
