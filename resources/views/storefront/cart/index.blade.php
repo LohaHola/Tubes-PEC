@@ -4,6 +4,8 @@
 
 @section('content')
 
+@include('layouts.partials.back-link', ['href' => route('storefront.products.index'), 'label' => 'Kembali ke Katalog'])
+
 <div style="margin-bottom:30px;">
     <h1 style="margin-bottom:8px;">Keranjang Belanja</h1>
 
