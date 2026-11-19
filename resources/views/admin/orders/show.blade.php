@@ -93,12 +93,7 @@
 
 <div class="order-detail">
 
-    <div>
-        <a href="{{ route('admin.orders.index') }}"
-           style="color:#64748b; font-size:13px;">
-            &larr; Kembali ke Daftar Pesanan
-        </a>
-    </div>
+    @include('layouts.partials.back-link', ['href' => route('admin.orders.index'), 'label' => 'Kembali ke Daftar Pesanan'])
 
     @if (session('status'))
         <div class="alert alert-success">
