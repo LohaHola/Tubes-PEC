@@ -1,3 +1,22 @@
+@php
+    $specificationRows = old('specifications');
+
+    if ($specificationRows === null) {
+        $specificationRows = $product->exists
+            ? $product->specifications->map(fn ($item) => [
+                'name' => $item->name,
+                'value' => $item->value,
+            ])->all()
+            : [];
+    }
+
+    if (empty($specificationRows)) {
+        $specificationRows = [
+            ['name' => '', 'value' => '']
+        ];
+    }
+@endphp
+
 @extends('layouts.app')
 
 @section('title', $product->exists ? 'Edit Produk' : 'Tambah Produk')
@@ -94,17 +113,65 @@
             >{{ old('description', $product->description) }}</textarea>
         </div>
 
-        <div class="form-group">
-            <label for="specifications">Spesifikasi (format JSON)</label>
 
-            <textarea
-                name="specifications"
-                id="specifications"
-                rows="5"
-                placeholder='{"Warna":"Hitam","Garansi":"1 tahun"}'
-                style="width:100%; padding:12px; border:1px solid #d5d9e0; border-radius:7px;"
-            >{{ old('specifications', $product->specifications ? json_encode($product->specifications, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) : '') }}</textarea>
+        <div class="form-group">
+
+            <label>Spesifikasi Produk</label>
+
+            <p style="color:#737b89; font-size:13px;">
+                Tambahkan atribut sesuai karakteristik produk.
+                Contoh: Warna, Ukuran, RAM, Garansi, dan lainnya.
+            </p>
+
+            <div
+                id="specifications-container"
+                data-next-index="{{ count($specificationRows) }}"
+            >
+
+                @foreach ($specificationRows as $index => $specification)
+                    <div class="specification-row"
+                        style="display:grid; grid-template-columns:1fr 1fr auto; gap:10px; margin-bottom:12px; align-items:end;">
+
+                        <div>
+                            <label>Nama Spesifikasi</label>
+                            <input
+                                type="text"
+                                name="specifications[{{ $index }}][name]"
+                                value="{{ $specification['name'] }}"
+                                placeholder="Contoh: Warna"
+                            >
+                        </div>
+
+                        <div>
+                            <label>Nilai</label>
+                            <input
+                                type="text"
+                                name="specifications[{{ $index }}][value]"
+                                value="{{ $specification['value'] }}"
+                                placeholder="Contoh: Hitam"
+                            >
+                        </div>
+
+                        <button type="button"
+                                class="button remove-specification"
+                                style="background:#dc2626; margin-bottom:1px;">
+                            Hapus
+                        </button>
+
+                    </div>
+                @endforeach
+
+            </div>
+
+            <button type="button"
+                    id="add-specification"
+                    class="button button-light"
+                    style="margin-top:5px;">
+                + Tambah Spesifikasi
+            </button>
+
         </div>
+
 
         <div class="form-group">
             <label for="price">Harga (Rupiah)</label>
@@ -184,6 +251,62 @@
                 Kembali
             </a>
         </div>
+
+    <script>
+        const container = document.getElementById('specifications-container');
+
+        let specificationIndex = Number(container.dataset.nextIndex || 0);
+
+        document.getElementById('add-specification').addEventListener('click', function () {
+            const row = document.createElement('div');
+
+            row.className = 'specification-row';
+
+            row.style.cssText = `
+                display:grid;
+                grid-template-columns:1fr 1fr auto;
+                gap:10px;
+                margin-bottom:12px;
+                align-items:end;
+            `;
+
+            row.innerHTML = `
+                <div>
+                    <label>Nama Spesifikasi</label>
+                    <input
+                        type="text"
+                        name="specifications[${specificationIndex}][name]"
+                        placeholder="Contoh: Warna"
+                    >
+                </div>
+
+                <div>
+                    <label>Nilai</label>
+                    <input
+                        type="text"
+                        name="specifications[${specificationIndex}][value]"
+                        placeholder="Contoh: Hitam"
+                    >
+                </div>
+
+                <button type="button"
+                        class="button remove-specification"
+                        style="background:#dc2626; margin-bottom:1px;">
+                    Hapus
+                </button>
+            `;
+
+            container.appendChild(row);
+            specificationIndex++;
+        });
+
+        container.addEventListener('click', function (event) {
+            if (event.target.classList.contains('remove-specification')) {
+                event.target.closest('.specification-row').remove();
+            }
+        });
+    </script>
+
     </form>
 
 </div>

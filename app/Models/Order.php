@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
     'payment_status',
     'fulfillment_status',
     'inventory_status',
+    'reserved_until',
 ])]
 class Order extends Model
 {
@@ -47,6 +48,7 @@ class Order extends Model
             'subtotal' => 'decimal:2',
             'shipping_cost' => 'decimal:2',
             'total_amount' => 'decimal:2',
+            'reserved_until' => 'datetime',
         ];
     }
 }

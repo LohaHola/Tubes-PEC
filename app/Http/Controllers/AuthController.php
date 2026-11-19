@@ -7,6 +7,10 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\Category;
+use App\Models\Order;
+use App\Models\Product;
+use App\Models\Cart;
 
 class AuthController extends Controller
 {
@@ -76,16 +80,64 @@ class AuthController extends Controller
 
     public function adminDashboard(): View
     {
-        return view('dashboard.admin');
+        $stats = [
+            'total_products' => Product::count(),
+            'active_products' => Product::where('is_active', true)->count(),
+            'total_categories' => Category::count(),
+            'total_customers' => User::where('role', 'customer')->count(),
+            'total_orders' => Order::count(),
+            'pending_payments' => Order::where('payment_status', 'pending')->count(),
+            'out_of_stock' => Product::where('stock', 0)->count(),
+            'total_revenue' => Order::where('payment_status', 'paid')
+                ->sum('total_amount'),
+        ];
+
+        $recentOrders = Order::with('user')
+            ->latest()
+            ->take(6)
+            ->get();
+
+        return view('dashboard.admin', compact('stats', 'recentOrders'));
     }
 
     public function customerDashboard(): View|RedirectResponse
     {
-        if (Auth::user()->role === 'admin') {
+        $user = Auth::user();
+
+        if ($user->role === 'admin') {
             return redirect()->route('admin.dashboard');
         }
 
-        return view('dashboard.customer');
+        $cart = Cart::with('items')->firstOrCreate([
+            'user_id' => $user->id,
+        ]);
+
+        $ordersQuery = Order::where('user_id', $user->id);
+
+        $stats = [
+            'total_orders' => (clone $ordersQuery)->count(),
+
+            'pending_orders' => (clone $ordersQuery)
+                ->where('payment_status', 'pending')
+                ->count(),
+
+            'cart_quantity' => $cart->items->sum('quantity'),
+
+            'total_spent' => (clone $ordersQuery)
+                ->where('payment_status', 'paid')
+                ->sum('total_amount'),
+        ];
+
+        $recentOrders = (clone $ordersQuery)
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('dashboard.customer', compact(
+            'user',
+            'stats',
+            'recentOrders'
+        ));
     }
 
     public function logout(Request $request): RedirectResponse
