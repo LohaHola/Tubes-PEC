@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Category;
 use App\Models\Order;
 use App\Models\Product;
-use App\Models\Cart;
 
 class AuthController extends Controller
 {
