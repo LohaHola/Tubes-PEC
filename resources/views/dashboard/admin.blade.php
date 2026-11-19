@@ -54,14 +54,39 @@
                 <div><span class="admin-eyebrow">FINANCIAL PERFORMANCE</span><h2>Performa omzet</h2><p>Ringkasan pendapatan 12 bulan terakhir</p></div>
                 <span class="admin-panel-tag">12 bulan</span>
             </div>
-            <div class="admin-month-bars">
-                @foreach ($monthlyPerformance as $month)
-                    <div class="admin-month-row">
+            @php
+                $chartPoints = $monthlyPerformance->values()->map(function ($month, $index) use ($monthlyPerformance) {
+                    $x = 42 + ($index * 636 / max(1, $monthlyPerformance->count() - 1));
+                    $y = 184 - (($month['revenue'] / max(1, (float) $monthlyPerformance->max('revenue'))) * 142);
+                    return ['x' => round($x, 2), 'y' => round($y, 2)];
+                });
+                $revenueLinePath = $chartPoints->map(fn ($point, $index) => ($index === 0 ? 'M' : 'L') . " {$point['x']} {$point['y']}")->implode(' ');
+                $revenueAreaPath = $revenueLinePath . ' L 678 190 L 42 190 Z';
+            @endphp
+            <div class="admin-revenue-chart">
+                <svg viewBox="0 0 720 220" role="img" aria-label="Grafik garis omzet 12 bulan terakhir">
+                    <defs>
+                        <linearGradient id="revenue-area-gradient" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#4B8BD1" stop-opacity=".24"/>
+                            <stop offset="100%" stop-color="#4B8BD1" stop-opacity="0"/>
+                        </linearGradient>
+                    </defs>
+                    @foreach ([42, 89, 136, 190] as $gridY)
+                        <line x1="42" y1="{{ $gridY }}" x2="678" y2="{{ $gridY }}" stroke="#EAF0F6" stroke-width="1" stroke-dasharray="4 5"/>
+                    @endforeach
+                    <path d="{{ $revenueAreaPath }}" fill="url(#revenue-area-gradient)"/>
+                    <path d="{{ $revenueLinePath }}" fill="none" stroke="#2866A2" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+                    @foreach ($chartPoints as $index => $point)
+                        <circle cx="{{ $point['x'] }}" cy="{{ $point['y'] }}" r="4.5" fill="#fff" stroke="#2866A2" stroke-width="2.5">
+                            <title>{{ $monthlyPerformance[$index]['label'] }}: Rp {{ number_format($monthlyPerformance[$index]['revenue'], 0, ',', '.') }}</title>
+                        </circle>
+                    @endforeach
+                </svg>
+                <div class="admin-revenue-month-labels">
+                    @foreach ($monthlyPerformance as $month)
                         <span>{{ $month['label'] }}</span>
-                        <div class="admin-bar-track"><div class="admin-bar-fill" style="width: {{ min(100, ($month['revenue'] / $maxMonthlyRevenue) * 100) }}%"></div></div>
-                        <strong>Rp {{ number_format($month['revenue'], 0, ',', '.') }}</strong>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
             </div>
             <div class="admin-profit-unavailable">
                 <div><strong>Laba bersih belum tersedia</strong><span>Dashboard saat ini menampilkan omzet pesanan lunas. Tambahkan data HPP dan biaya operasional untuk menghitung laba bersih secara akurat.</span></div>
