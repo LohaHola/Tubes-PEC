@@ -66,7 +66,7 @@ Route::middleware('auth')->group(function () {
     // Admin Routes
     Route::prefix('admin')->name('admin.')->middleware('admin')->group(function () {
         Route::get('/dashboard', [AuthController::class, 'adminDashboard'])->name('dashboard');
-        Route::resource('categories', CategoryController::class)->except(['show']);
+        Route::resource('categories', CategoryController::class)->except(['show']);\n        Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');\n        Route::get('/customers/{user}', [CustomerController::class, 'show'])->name('customers.show');\n        Route::patch('/customers/{user}', [CustomerController::class, 'update'])->name('customers.update');
         Route::resource('products', ProductController::class)->except(['show']);
         Route::resource('orders', AdminOrderController::class)->only(['index', 'show', 'update']);
     });
