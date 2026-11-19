@@ -20,7 +20,7 @@ class StorefrontController extends Controller
             ->take(8)
             ->get();
 
-        return view('storefront.home', compact('categories', 'products'));
+        return view('storefront.home', compact('categories', 'products', 'promotions', 'recommendations'));
     }
 
     public function products(Request $request): View
