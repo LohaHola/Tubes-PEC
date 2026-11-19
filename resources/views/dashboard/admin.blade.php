@@ -63,9 +63,9 @@
                     </div>
                 @endforeach
             </div>
-            <div class="admin-finance-note">
-                <span>ⓘ</span>
-                <p>Angka ini merupakan omzet dari pesanan berstatus lunas, belum dikurangi harga modal, biaya operasional, atau pajak. Laba bersih belum dapat dihitung karena data HPP belum tersedia.</p>
+            <div class="admin-profit-unavailable">
+                <div><strong>Laba bersih belum tersedia</strong><span>Dashboard saat ini menampilkan omzet pesanan lunas. Tambahkan data HPP dan biaya operasional untuk menghitung laba bersih secara akurat.</span></div>
+                <span class="admin-panel-tag">Butuh data biaya</span>
             </div>
         </article>
 
