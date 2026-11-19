@@ -25,6 +25,12 @@
         <span>Pesanan</span>
     </a>
 
+    <a href="{{ route('admin.customers.index') }}"
+       class="admin-nav-link {{ request()->routeIs('admin.customers.*') ? 'is-active' : '' }}">
+        <span class="admin-nav-icon" aria-hidden="true">♙</span>
+        <span>Customer</span>
+    </a>
+
     <div class="admin-nav-divider"></div>
 
     <a href="{{ route('home') }}" class="admin-nav-link">
