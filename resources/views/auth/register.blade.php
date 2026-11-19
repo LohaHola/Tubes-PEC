@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Register - TubesPEC')
+@section('title', 'Register - Arbyte')
 
 @section('content')
 <div class="auth-card">
@@ -8,7 +8,7 @@
     <h1>Create Account</h1>
 
     <p class="subtitle">
-        Buat akun customer untuk mulai menggunakan TubesPEC.
+        Buat akun customer untuk mulai menggunakan Arbyte.
     </p>
 
     @if ($errors->any())
