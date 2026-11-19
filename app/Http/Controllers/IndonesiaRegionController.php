@@ -1,10 +1,10 @@
 <?php
 
-namespace App\\Http\\Controllers;
+namespace App\Http\Controllers;
 
-use App\\Http\\Controllers\\Controller;
-use App\\Services\\IndonesiaRegionService;
-use Illuminate\\Http\\JsonResponse;
+use App\Http\Controllers\Controller;
+use App\Services\IndonesiaRegionService;
+use Illuminate\Http\JsonResponse;
 use RuntimeException;
 
 class IndonesiaRegionController extends Controller
