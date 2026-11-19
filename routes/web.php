@@ -11,6 +11,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductReviewController;
 use App\Http\Controllers\Customer\ProfileController;
+use App\Http\Controllers\IndonesiaRegionController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,6 +37,10 @@ Route::middleware('auth')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/dashboard', [AuthController::class, 'dashboard'])->name('dashboard');
     Route::get('/customer/dashboard', [AuthController::class, 'customerDashboard'])->name('customer.dashboard');
+
+    // Authoritative Indonesian region options for profile and customer management
+    Route::get('/regions/provinces', [IndonesiaRegionController::class, 'provinces'])->name('regions.provinces');
+    Route::get('/regions/provinces/{provinceId}/cities', [IndonesiaRegionController::class, 'cities'])->name('regions.cities');
 
     // Customer Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('customer.profile.edit');
