@@ -18,6 +18,7 @@
             @if ($isCustomer)
                 <a href="{{ route('cart.index') }}" class="{{ request()->routeIs('cart.*') ? 'is-active' : '' }}">Keranjang</a>
                 <a href="{{ route('customer.orders.index') }}" class="{{ request()->routeIs('customer.orders.*') ? 'is-active' : '' }}">Pesanan</a>
+                <a href="{{ route('customer.profile.edit') }}" class="{{ request()->routeIs('customer.profile.*') ? 'is-active' : '' }}">Profil</a>
             @endif
         </nav>
 
