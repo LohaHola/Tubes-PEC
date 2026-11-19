@@ -31,7 +31,7 @@
                             @if (auth()->user()->profile_photo_path)
                                 <img src="{{ asset('storage/' . auth()->user()->profile_photo_path) }}" alt="" class="account-menu-photo">
                             @else
-                                <span class="account-menu-fallback">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                                <span class="account-menu-fallback" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"></circle><path d="M4.5 20c.8-3.5 3.3-5.5 7.5-5.5s6.7 2 7.5 5.5"></path></svg></span>
                             @endif
                             <span class="account-menu-chevron" aria-hidden="true">⌄</span>
                         </summary>
