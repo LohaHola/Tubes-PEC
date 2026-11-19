@@ -85,7 +85,7 @@
                 <div class="checkout-item">
                     <div>
                         <strong>{{ $item->product->name }}</strong>
-                        <small>{{ $item->quantity }} × Rp {{ number_format((float) $item->product->price, 0, ',', '.') }}</small>
+                        <small>{{ $item->quantity }} × Rp {{ number_format((float) $item->product->currentPrice(), 0, ',', '.') }}</small>
                     </div>
                     <strong>Rp {{ number_format((float) $item->product->price * $item->quantity, 0, ',', '.') }}</strong>
                 </div>
