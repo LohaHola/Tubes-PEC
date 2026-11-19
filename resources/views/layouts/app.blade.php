@@ -30,7 +30,7 @@
                     <div style="display:flex; align-items:center; gap:13px;">
                         <button type="button" class="admin-mobile-toggle" id="adminMenuToggle" aria-label="Buka navigasi" aria-controls="adminSidebar" aria-expanded="false">☰</button>
                         <div>
-                            <div class="admin-topbar-title">@yield('page-heading', trim($__env->yieldContent('title', 'Workspace Administrator')))</div>
+                            <div class="admin-topbar-title">@yield('title', 'Workspace Administrator')</div>
                             <div class="admin-topbar-context">TubesPEC / Administrator</div>
                         </div>
                     </div>
