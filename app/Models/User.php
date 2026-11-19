@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 #[Fillable([
     'name',
     'email',
+    'profile_photo_path',
     'password',
     'phone',
     'address',
