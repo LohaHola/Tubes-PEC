@@ -780,3 +780,14 @@ input, select, textarea { accent-color: var(--tp-blue); }
     .profile-actions .store-button { width:100%; }
     .reviews-heading { flex-direction:column; }
 }
+
+.product-rating-link { display:inline-flex; align-items:center; gap:8px; margin:3px 0 8px; color:var(--tp-muted); font-size:12px; }
+.product-rating-link strong { color:var(--tp-text); }
+.product-card-rating { display:flex; align-items:center; gap:5px; margin:8px 0 5px; color:var(--tp-muted); font-size:11px; }
+.product-card-rating .review-stars { letter-spacing:0; }
+.product-card-rating strong { color:var(--tp-text); }
+.stock-available { color:#15803D; font-weight:700; }
+.stock-unavailable { color:#B91C1C; font-weight:700; }
+.product-buy-form { display:flex; align-items:end; flex-wrap:wrap; gap:10px; margin:22px 0; }
+.product-buy-form label { width:100%; margin-bottom:-5px; }
+.product-buy-form input { width:90px; min-height:44px; }
