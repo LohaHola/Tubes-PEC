@@ -52,7 +52,7 @@ class ProductReviewController extends Controller
         );
 
         return redirect()
-            ->route('storefront.products.show', $product)
+            ->route('storefront.products.show', $product->slug)
             ->with('status', 'Terima kasih! Ulasan produk berhasil disimpan.');
     }
 }
