@@ -23,6 +23,68 @@
     </div>
 </section>
 
+
+@if ($promotions->isNotEmpty())
+    <section class="home-section">
+        <div class="section-heading">
+            <div>
+                <h2>{{ $promotions->first()->section_title ?: 'Promo Spesial' }}</h2>
+                <div class="section-subtitle">Penawaran pilihan dari Arbyte.</div>
+            </div>
+        </div>
+        <div class="product-grid">
+            @foreach ($promotions as $feature)
+                <article class="product-card">
+                    <a href="{{ route('storefront.products.show', $feature->product->slug) }}" class="product-card-link">
+                        @if ($feature->product->image_path)
+                            <img class="product-image" src="{{ asset('storage/' . $feature->product->image_path) }}" alt="{{ $feature->product->name }}">
+                        @endif
+                        <div class="product-card-body">
+                            <div class="product-category">{{ $feature->item_title ?: 'PROMO' }}</div>
+                            <h3>{{ $feature->product->name }}</h3>
+                            @if ($feature->description)<p class="section-subtitle">{{ $feature->description }}</p>@endif
+                            @if ($feature->promo_price !== null)
+                                <div><s>Rp {{ number_format((float) $feature->product->price, 0, ',', '.') }}</s></div>
+                                <strong>Rp {{ number_format((float) $feature->promo_price, 0, ',', '.') }}</strong>
+                            @else
+                                <strong>Rp {{ number_format((float) $feature->product->price, 0, ',', '.') }}</strong>
+                            @endif
+                        </div>
+                    </a>
+                </article>
+            @endforeach
+        </div>
+    </section>
+@endif
+
+@if ($recommendations->isNotEmpty())
+    <section class="home-section">
+        <div class="section-heading">
+            <div>
+                <h2>{{ $recommendations->first()->section_title ?: 'Rekomendasi Pilihan' }}</h2>
+                <div class="section-subtitle">Produk yang dipilih langsung oleh tim Arbyte.</div>
+            </div>
+        </div>
+        <div class="product-grid">
+            @foreach ($recommendations as $feature)
+                <article class="product-card">
+                    <a href="{{ route('storefront.products.show', $feature->product->slug) }}" class="product-card-link">
+                        @if ($feature->product->image_path)
+                            <img class="product-image" src="{{ asset('storage/' . $feature->product->image_path) }}" alt="{{ $feature->product->name }}">
+                        @endif
+                        <div class="product-card-body">
+                            <div class="product-category">{{ $feature->item_title ?: 'REKOMENDASI' }}</div>
+                            <h3>{{ $feature->product->name }}</h3>
+                            @if ($feature->description)<p class="section-subtitle">{{ $feature->description }}</p>@endif
+                            <strong>Rp {{ number_format((float) $feature->product->price, 0, ',', '.') }}</strong>
+                        </div>
+                    </a>
+                </article>
+            @endforeach
+        </div>
+    </section>
+@endif
+
 <section class="home-section" id="kategori">
     <div class="section-heading">
         <div>
