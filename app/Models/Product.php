@@ -43,6 +43,17 @@ class Product extends Model
         return $this->hasMany(ProductSpecification::class)->orderBy('sort_order');
     }
 
+    public function currentPrice(): string
+    {
+        $promoPrice = HomepageProductFeature::visible()
+            ->where('type', 'promo')
+            ->where('product_id', $this->id)
+            ->orderBy('sort_order')
+            ->value('promo_price');
+
+        return $promoPrice !== null ? (string) $promoPrice : (string) $this->price;
+    }
+
     public function reviews(): HasMany
     {
         return $this->hasMany(ProductReview::class);
