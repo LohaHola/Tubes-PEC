@@ -947,3 +947,9 @@ input, select, textarea { accent-color: var(--tp-blue); }
     .account-menu-trigger { width:42px; height:42px; }
     .account-menu-photo, .account-menu-fallback { width:34px; height:34px; }
 }
+
+.account-menu-fallback svg, .profile-avatar-fallback svg { width:22px; height:22px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+.profile-avatar-fallback { display:grid !important; width:100%; height:100%; place-items:center; }
+.admin-profit-unavailable { display:flex; align-items:center; justify-content:space-between; gap:15px; margin:0 0 16px; padding:13px 15px; border:1px solid #F0E4C7; border-radius:11px; background:#FFFCF4; }
+.admin-profit-unavailable strong { display:block; color:#87652A; font-size:11px; }
+.admin-profit-unavailable span { display:block; margin-top:4px; color:#9A865F; font-size:10px; line-height:1.5; }
