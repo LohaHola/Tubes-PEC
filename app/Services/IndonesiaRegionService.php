@@ -9,18 +9,18 @@ use RuntimeException;
 
 class IndonesiaRegionService
 {
-    private const API_BASE = 'https://www.emsifa.com/api-wilayah-indonesia/api';
+    private const API_BASE = 'https://www.emsifa.com/api-wilayah-indonesia/v2';
 
     public function provinces(): Collection
     {
         return Cache::remember('indonesia-regions.provinces', now()->addDays(7), function () {
             $response = Http::acceptJson()->timeout(8)->get(self::API_BASE . '/provinces.json');
 
-            if (!$response->successful() || !is_array($response->json())) {
+            if (!$response->successful() || !is_array($response->json('data'))) {
                 throw new RuntimeException('Data provinsi tidak dapat dimuat.');
             }
 
-            return collect($response->json())
+            return collect($response->json('data'))
                 ->map(fn (array $item) => ['id' => (string) $item['id'], 'name' => (string) $item['name']])
                 ->values();
         });
