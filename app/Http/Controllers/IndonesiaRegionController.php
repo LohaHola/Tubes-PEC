@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Services\IndonesiaRegionService;
 use Illuminate\Http\JsonResponse;
-use RuntimeException;
+use Throwable;
 
 class IndonesiaRegionController extends Controller
 {
@@ -13,7 +13,7 @@ class IndonesiaRegionController extends Controller
     {
         try {
             return response()->json(['data' => $regions->provinces()]);
-        } catch (RuntimeException $exception) {
+        } catch (Throwable $exception) {
             return response()->json(['message' => 'Data wilayah sementara tidak tersedia. Coba lagi nanti.'], 503);
         }
     }
