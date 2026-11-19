@@ -76,7 +76,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
         Route::get('/customers/{user}', [CustomerController::class, 'show'])->name('customers.show');
         Route::patch('/customers/{user}', [CustomerController::class, 'update'])->name('customers.update');
-        Route::resource('products', ProductController::class)->except(['show']);
+        Route::resource('products', ProductController::class)->except(['show']);\n        Route::resource('homepage-features', HomepageFeatureController::class)->except(['show'])->parameters(['homepage-features' => 'homepage_feature']);
         Route::resource('orders', AdminOrderController::class)->only(['index', 'show', 'update']);
     });
 });
