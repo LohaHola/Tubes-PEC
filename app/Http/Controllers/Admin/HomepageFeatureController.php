@@ -73,7 +73,7 @@ class HomepageFeatureController extends Controller
 
     private function validated(Request $request): array
     {
-        return $request->validate([
+        $data = $request->validate([
             'type' => ['required', Rule::in(['promo', 'recommendation'])],
             'section_title' => ['nullable', 'string', 'max:120'],
             'product_id' => ['required', 'integer', 'exists:products,id'],
