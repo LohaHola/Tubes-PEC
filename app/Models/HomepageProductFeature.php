@@ -39,7 +39,7 @@ class HomepageProductFeature extends Model
     public function scopeVisible($query)
     {
         return $query->where('is_active', true)
-            ->whereHas('product', fn ($product) => $product->where('is_active', true))
+            ->whereHas('product', fn ($product) => $product->where('is_active', true)->where('stock', '>', 0))
             ->where(fn ($q) => $q->whereNull('starts_at')->orWhere('starts_at', '<=', now()))
             ->where(fn ($q) => $q->whereNull('ends_at')->orWhere('ends_at', '>=', now()));
     }
