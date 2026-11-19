@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Login - TubesPEC')
+@section('title', 'Login - Arbyte')
 
 @section('content')
 <div class="auth-card">
@@ -8,7 +8,7 @@
     <h1>Welcome Back</h1>
 
     <p class="subtitle">
-        Login untuk melanjutkan ke akun TubesPEC.
+        Login untuk melanjutkan ke akun Arbyte.
     </p>
 
     @if ($errors->any())

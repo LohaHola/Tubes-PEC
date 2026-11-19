@@ -1,7 +1,7 @@
 
 @extends('layouts.app')
 
-@section('title', 'Admin Dashboard - TubesPEC')
+@section('title', 'Admin Dashboard - Arbyte')
 
 @section('content')
 
@@ -223,7 +223,7 @@
 
             <div class="admin-muted">
                 Selamat datang, {{ Auth::user()->name }}.
-                Berikut ringkasan aktivitas toko TubesPEC.
+                Berikut ringkasan aktivitas toko Arbyte.
             </div>
         </div>
 

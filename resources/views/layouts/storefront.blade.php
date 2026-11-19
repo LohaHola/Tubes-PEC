@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0B1F3A">
-    <title>@yield('title', 'TubesPEC - Online Store')</title>
+    <title>@yield('title', 'Arbyte - Online Store')</title>
     <link rel="stylesheet" href="{{ asset('css/tubespec.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/arbyte-footer.css') }}">
 </head>
 <body>
     @include('layouts.partials.customer-navigation')
@@ -20,8 +21,6 @@
         @yield('content')
     </main>
 
-    <footer class="store-footer">
-        © {{ date('Y') }} <strong>TubesPEC</strong>. Teknologi untuk kebutuhan digital.
-    </footer>
+    @include('layouts.partials.store-footer')
 </body>
 </html>

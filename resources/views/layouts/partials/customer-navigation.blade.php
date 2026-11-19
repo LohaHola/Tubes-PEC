@@ -5,7 +5,7 @@
 
 <header class="store-header">
     <div class="header-inner">
-        <a href="{{ route('home') }}" class="store-logo" aria-label="TubesPEC beranda">TubesPEC<span>.</span></a>
+        <a href="{{ route('home') }}" class="store-logo" aria-label="Arbyte beranda">Arbyte<span>.</span></a>
 
         <form action="{{ route('storefront.products.index') }}" method="GET" class="header-search" role="search">
             <input type="search" name="q" value="{{ request('q') }}" placeholder="Cari komputer, periferal, audio..." aria-label="Cari produk">

@@ -1,7 +1,7 @@
 
 @extends('layouts.app')
 
-@section('title', 'Customer Dashboard - TubesPEC')
+@section('title', 'Customer Dashboard - Arbyte')
 
 @section('content')
 
@@ -199,7 +199,7 @@
         </h1>
 
         <p class="customer-muted">
-            Selamat datang di dashboard TubesPEC.
+            Selamat datang di dashboard Arbyte.
             Pantau aktivitas belanja dan pesananmu di sini.
         </p>
 

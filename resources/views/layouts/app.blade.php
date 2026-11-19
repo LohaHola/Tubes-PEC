@@ -4,14 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#0B1F3A">
-    <title>@yield('title', 'TubesPEC')</title>
+    <title>@yield('title', 'Arbyte')</title>
     <link rel="stylesheet" href="{{ asset('css/tubespec.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/arbyte-footer.css') }}">
 </head>
 <body class="{{ auth()->check() && auth()->user()->role === 'admin' ? 'admin-body' : 'account-body' }}">
     @if (auth()->check() && auth()->user()->role === 'admin')
         <div class="admin-shell">
             <aside class="admin-sidebar" id="adminSidebar">
-                <a href="{{ route('admin.dashboard') }}" class="admin-brand">TubesPEC<span>.</span></a>
+                <a href="{{ route('admin.dashboard') }}" class="admin-brand">Arbyte<span>.</span></a>
                 @include('layouts.partials.admin-navigation')
                 <div class="admin-sidebar-footer">
                     <div class="admin-user-name">{{ auth()->user()->name }}</div>
@@ -31,7 +32,7 @@
                         <button type="button" class="admin-mobile-toggle" id="adminMenuToggle" aria-label="Buka navigasi" aria-controls="adminSidebar" aria-expanded="false">☰</button>
                         <div>
                             <div class="admin-topbar-title">@yield('title', 'Workspace Administrator')</div>
-                            <div class="admin-topbar-context">TubesPEC / Administrator</div>
+                            <div class="admin-topbar-context">Arbyte / Administrator</div>
                         </div>
                     </div>
                     <a href="{{ route('home') }}" class="admin-topbar-user">Lihat Toko ↗</a>
@@ -88,7 +89,7 @@
             @endif
             @yield('content')
         </main>
-        <footer class="store-footer">© {{ date('Y') }} <strong>TubesPEC</strong>. Teknologi untuk kebutuhan digital.</footer>
+        @include('layouts.partials.store-footer')
     @endif
 </body>
 </html>

@@ -1,6 +1,6 @@
 @extends('layouts.storefront')
 
-@section('title', 'Keranjang Belanja - TubesPEC')
+@section('title', 'Keranjang Belanja - Arbyte')
 
 @section('content')
 

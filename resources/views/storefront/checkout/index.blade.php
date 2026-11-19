@@ -1,6 +1,6 @@
 @extends('layouts.storefront')
 
-@section('title', 'Checkout - TubesPEC')
+@section('title', 'Checkout - Arbyte')
 
 @section('content')
 

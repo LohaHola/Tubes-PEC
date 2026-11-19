@@ -1,6 +1,6 @@
 @extends('layouts.storefront')
 
-@section('title', 'TubesPEC — Technology for Everyday')
+@section('title', 'Arbyte — Technology for Everyday')
 
 @section('content')
 <section class="hero-ecosystem">
@@ -48,7 +48,7 @@
     <div class="section-heading">
         <div>
             <h2>Produk terbaru</h2>
-            <div class="section-subtitle">Pilihan terbaru yang tersedia di katalog TubesPEC.</div>
+            <div class="section-subtitle">Pilihan perangkat teknologi yang tersedia di katalog Arbyte.</div>
         </div>
         <a href="{{ route('storefront.products.index') }}" class="admin-link">Lihat semua produk →</a>
     </div>
