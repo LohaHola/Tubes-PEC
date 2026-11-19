@@ -35,6 +35,7 @@ class HomepageFeatureController extends Controller
     {
         $data = $this->validated($request);
         $data['is_active'] = $request->boolean('is_active');
+        if ($data['type'] === 'recommendation') $data['promo_price'] = null;
         HomepageProductFeature::create($data);
 
         return redirect()->route('admin.homepage-features.index')
@@ -55,6 +56,7 @@ class HomepageFeatureController extends Controller
     {
         $data = $this->validated($request);
         $data['is_active'] = $request->boolean('is_active');
+        if ($data['type'] === 'recommendation') $data['promo_price'] = null;
         $homepage_feature->update($data);
 
         return redirect()->route('admin.homepage-features.index')
@@ -77,7 +79,7 @@ class HomepageFeatureController extends Controller
             'product_id' => ['required', 'integer', 'exists:products,id'],
             'item_title' => ['nullable', 'string', 'max:160'],
             'description' => ['nullable', 'string', 'max:1000'],
-            'promo_price' => ['nullable', 'numeric', 'min:0'],
+            'promo_price' => ['nullable', 'numeric', 'min:0', 'exclude_if:type,recommendation'],
             'starts_at' => ['nullable', 'date', 'required_with:ends_at'],
             'ends_at' => ['nullable', 'date', 'after_or_equal:starts_at'],
             'sort_order' => ['nullable', 'integer', 'min:0', 'max:9999'],
