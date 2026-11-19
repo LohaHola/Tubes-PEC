@@ -3,7 +3,7 @@
     $isAdmin = auth()->check() && auth()->user()->role === 'admin';
 @endphp
 
-<header class="store-header {{ request()->routeIs('dashboard') ? 'account-header' : '' }}">
+<header class="store-header">
     <div class="header-inner">
         <a href="{{ route('home') }}" class="store-logo" aria-label="TubesPEC beranda">TubesPEC<span>.</span></a>
 
