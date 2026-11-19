@@ -10,9 +10,15 @@
         <div>
             <div class="product-category">AKUN CUSTOMER</div>
             <h1>Profil Saya</h1>
-            <p>Perbarui informasi akun dan alamat yang biasa digunakan untuk pengiriman.</p>
+            <p>Kelola foto, informasi akun, dan alamat pengirimanmu.</p>
         </div>
-        <div class="profile-avatar" aria-hidden="true">{{ strtoupper(substr($user->name, 0, 1)) }}</div>
+        <div class="profile-avatar profile-avatar-large">
+            @if ($user->profile_photo_path)
+                <img src="{{ asset('storage/' . $user->profile_photo_path) }}" alt="Foto profil {{ $user->name }}">
+            @else
+                <span>{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+            @endif
+        </div>
     </div>
 
     @if ($errors->any())
@@ -26,14 +32,38 @@
         </div>
     @endif
 
-    <form action="{{ route('customer.profile.update') }}" method="POST" class="profile-form">
+    <form action="{{ route('customer.profile.update') }}" method="POST" enctype="multipart/form-data" class="profile-form">
         @csrf
         @method('PATCH')
 
         <section class="profile-section">
+            <h2>Foto Profil</h2>
+            <p class="profile-section-help">Gunakan foto JPG, PNG, atau WEBP. Ukuran maksimal 2 MB.</p>
+            <div class="profile-photo-editor">
+                <div class="profile-avatar profile-avatar-preview">
+                    @if ($user->profile_photo_path)
+                        <img src="{{ asset('storage/' . $user->profile_photo_path) }}" alt="Foto profil saat ini">
+                    @else
+                        <span>{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                    @endif
+                </div>
+                <div class="profile-photo-controls">
+                    <label for="profile_photo">Pilih foto baru</label>
+                    <input id="profile_photo" type="file" name="profile_photo" accept=".jpg,.jpeg,.png,.webp,image/jpeg,image/png,image/webp">
+                    <small>Foto akan tampil pada ikon akun di navigasi toko.</small>
+                    @if ($user->profile_photo_path)
+                        <label class="profile-remove-photo">
+                            <input type="checkbox" name="remove_profile_photo" value="1">
+                            Hapus foto profil saat ini
+                        </label>
+                    @endif
+                </div>
+            </div>
+        </section>
+
+        <section class="profile-section">
             <h2>Informasi Akun</h2>
             <p class="profile-section-help">Informasi ini digunakan untuk mengenali akun kamu.</p>
-
             <div class="profile-fields">
                 <div class="form-group">
                     <label for="name">Nama lengkap</label>
@@ -54,12 +84,10 @@
         <section class="profile-section">
             <h2>Alamat Pengiriman</h2>
             <p class="profile-section-help">Simpan alamat agar kamu tidak perlu mengisinya dari awal setiap checkout.</p>
-
             <div class="form-group">
                 <label for="address">Alamat lengkap</label>
                 <textarea id="address" name="address" rows="3" autocomplete="street-address" maxlength="2000" placeholder="Nama jalan, nomor rumah, kelurahan, kecamatan...">{{ old('address', $user->address) }}</textarea>
             </div>
-
             <div class="profile-fields">
                 <div class="form-group">
                     <label for="city">Kota/Kabupaten</label>
