@@ -60,7 +60,7 @@ class ProfileController extends Controller
                     fn (array $item) => $item['id'] === $provinceId
                 );
                 $city = $province ? $regions->findCity($provinceId, $cityName) : null;
-            } catch (\\RuntimeException $exception) {
+            } catch (\Throwable $exception) {
                 throw ValidationException::withMessages([
                     'city' => 'Data wilayah belum dapat diverifikasi. Coba lagi beberapa saat.',
                 ]);
