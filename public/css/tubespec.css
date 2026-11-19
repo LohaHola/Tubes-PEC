@@ -791,3 +791,5 @@ input, select, textarea { accent-color: var(--tp-blue); }
 .product-buy-form { display:flex; align-items:end; flex-wrap:wrap; gap:10px; margin:22px 0; }
 .product-buy-form label { width:100%; margin-bottom:-5px; }
 .product-buy-form input { width:90px; min-height:44px; }
+
+.checkout-disabled { border-color:#CBD5E1 !important; background:#E2E8F0 !important; color:#64748B !important; box-shadow:none !important; cursor:not-allowed !important; }
