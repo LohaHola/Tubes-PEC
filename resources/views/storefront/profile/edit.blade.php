@@ -16,7 +16,7 @@
             @if ($user->profile_photo_path)
                 <img src="{{ asset('storage/' . $user->profile_photo_path) }}" alt="Foto profil {{ $user->name }}">
             @else
-                <span>{{ strtoupper(substr($user->name, 0, 1)) }}</span>
+                <span class="profile-avatar-fallback" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"></circle><path d="M4.5 20c.8-3.5 3.3-5.5 7.5-5.5s6.7 2 7.5 5.5"></path></svg></span>
             @endif
         </div>
     </div>
