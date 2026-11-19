@@ -13,7 +13,7 @@ class IndonesiaRegionService
 
     public function provinces(): Collection
     {
-        return Cache::remember('indonesia-regions.provinces', now()->addDays(7), function () {
+        return Cache::remember('indonesia-regions.wilayah-id.provinces', now()->addDays(7), function () {
             $response = Http::acceptJson()
                 ->timeout(12)
                 ->retry(2, 250)
@@ -36,7 +36,7 @@ class IndonesiaRegionService
 
     public function cities(string $provinceId): Collection
     {
-        return Cache::remember('indonesia-regions.cities.' . $provinceId, now()->addDays(7), function () use ($provinceId) {
+        return Cache::remember('indonesia-regions.wilayah-id.cities.' . $provinceId, now()->addDays(7), function () use ($provinceId) {
             $response = Http::acceptJson()
                 ->timeout(12)
                 ->retry(2, 250)
