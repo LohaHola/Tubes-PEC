@@ -91,7 +91,7 @@
                             </h3>
 
                             <strong style="font-size:16px;">
-                                Rp {{ number_format((float) $product->price, 0, ',', '.') }}
+                                Rp {{ number_format((float) $product->currentPrice(), 0, ',', '.') }}
                             </strong>
 
                             @if (!$product->is_active)
