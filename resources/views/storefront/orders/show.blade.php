@@ -1,4 +1,3 @@
-
 @extends('layouts.storefront')
 
 @section('title', 'Detail Pesanan - TubesPEC')
@@ -51,6 +50,36 @@
         <p style="color:#64748b; font-size:14px;">
             {{ ucfirst($order->fulfillment_status) }}
         </p>
+        @if (
+            $order->payment_status === 'pending' &&
+            $order->inventory_status === 'reserved' &&
+            $order->reserved_until?->isFuture()
+        )
+
+            <div style="margin-top:22px; padding:18px; background:#fffbeb; border:1px solid #fde68a; border-radius:9px;">
+
+                <strong>Pesanan Menunggu Pembayaran</strong>
+
+                <p style="font-size:13px; color:#92400e; line-height:1.6;">
+                    Selesaikan pembayaran sebelum
+                    {{ $order->reserved_until->format('d M Y, H:i') }}.
+                    Setelah batas waktu tersebut, reservasi stok dapat dilepaskan.
+                </p>
+
+                <form
+                    action="{{ route('customer.orders.pay', $order) }}"
+                    method="POST"
+                >
+                    @csrf
+
+                    <button type="submit" class="store-button">
+                        Bayar Sekarang
+                    </button>
+                </form>
+
+            </div>
+
+        @endif
 
         @if ($order->inventory_status === 'reserved' && $order->reserved_until)
             <p style="color:#92400e; font-size:13px;">

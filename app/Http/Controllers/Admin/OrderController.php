@@ -90,7 +90,10 @@ class OrderController extends Controller
 
         $nextStatuses = [];
 
-        if ($order->payment_status === 'paid') {
+        if (
+            $order->payment_status === 'paid' &&
+            $order->inventory_status === 'committed'
+        ){
             $nextStatuses = match ($order->fulfillment_status) {
                 'unprocessed' => ['processing'],
                 'processing' => ['shipped'],
@@ -125,6 +128,12 @@ class OrderController extends Controller
                 throw ValidationException::withMessages([
                     'fulfillment_status' =>
                         'Pesanan belum dibayar. Proses pengiriman belum dapat dilakukan.',
+                ]);
+            }
+            if ($lockedOrder->inventory_status !== 'committed') {
+                throw ValidationException::withMessages([
+                    'fulfillment_status' =>
+                        'Stok pesanan belum dikonfirmasi. Periksa pesanan ini secara manual.',
                 ]);
             }
 

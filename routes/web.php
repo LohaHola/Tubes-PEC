@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\PaymentController;
 
 // Public Storefront
 Route::get('/', [StorefrontController::class, 'index'])
@@ -19,6 +20,12 @@ Route::get('/products', [StorefrontController::class, 'products'])
 
 Route::get('/products/{product:slug}', [StorefrontController::class, 'show'])
     ->name('storefront.products.show');
+
+// Midtrans Webhook
+Route::post('/midtrans/notification', [
+    PaymentController::class,
+    'notification',
+])->name('midtrans.notification');
 
 // Guest Routes
 Route::middleware('guest')->group(function () {
@@ -64,6 +71,17 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/orders/{order}', [OrderController::class, 'show'])
         ->name('customer.orders.show');
+
+    // Midtrans Payment
+    Route::post('/orders/{order}/pay', [
+        PaymentController::class,
+        'pay',
+    ])->name('customer.orders.pay');
+
+    Route::get('/payments/finish', [
+        PaymentController::class,
+        'finish',
+    ])->name('payment.finish');
 
     // Shopping Cart Routes
     Route::get('/cart', [CartController::class, 'index'])
