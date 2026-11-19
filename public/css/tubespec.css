@@ -953,3 +953,14 @@ input, select, textarea { accent-color: var(--tp-blue); }
 .admin-profit-unavailable { display:flex; align-items:center; justify-content:space-between; gap:15px; margin:0 0 16px; padding:13px 15px; border:1px solid #F0E4C7; border-radius:11px; background:#FFFCF4; }
 .admin-profit-unavailable strong { display:block; color:#87652A; font-size:11px; }
 .admin-profit-unavailable span { display:block; margin-top:4px; color:#9A865F; font-size:10px; line-height:1.5; }
+
+/* Shared catalog pagination on admin product listing */
+.admin-catalog-pagination { margin-top:20px; }
+.admin-revenue-chart { width:100%; min-width:0; }
+.admin-revenue-chart svg { display:block; width:100%; height:auto; overflow:visible; }
+.admin-revenue-month-labels { display:grid; grid-template-columns:repeat(12,minmax(0,1fr)); gap:3px; margin:4px 0 0; }
+.admin-revenue-month-labels span { overflow:hidden; color:#8795A6; font-size:9px; text-align:center; text-overflow:clip; white-space:nowrap; }
+@media (max-width:560px) {
+    .admin-revenue-month-labels span { font-size:7px; }
+    .admin-catalog-pagination .catalog-pagination-controls { flex-wrap:wrap; }
+}
