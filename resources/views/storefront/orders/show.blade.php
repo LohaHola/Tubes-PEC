@@ -4,12 +4,7 @@
 
 @section('content')
 
-<div style="margin-bottom:25px;">
-    <a href="{{ route('customer.orders.index') }}"
-       style="color:#64748b; font-size:13px;">
-        &larr; Kembali ke Pesanan Saya
-    </a>
-</div>
+@include('layouts.partials.back-link', ['href' => route('customer.orders.index'), 'label' => 'Kembali ke Pesanan Saya'])
 
 @if (session('status'))
     <div class="alert">{{ session('status') }}</div>
