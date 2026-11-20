@@ -497,6 +497,22 @@ class PaymentController extends Controller
                 $processingStatus = 'ignored_stale';
             }
 
+            // A late pending/expiry notification must not reopen a customer-cancelled order.
+            // A genuine success is still recorded so funds are never silently ignored.
+            $confirmedSuccessfulPayment = (
+                $transactionStatus === 'settlement' ||
+                ($transactionStatus === 'capture' && $fraudStatus === 'accept')
+            );
+
+            if (
+                $currentOrderStatus === 'cancelled' &&
+                !$confirmedSuccessfulPayment
+            ) {
+                $paymentStatus = $lockedPayment->status;
+                $orderPaymentStatus = null;
+                $processingStatus = 'ignored_cancelled_order';
+            }
+
             $metadata = $lockedPayment->metadata ?? [];
 
             $metadata['latest_notification'] = [
