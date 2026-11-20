@@ -29,7 +29,7 @@ Arbyte adalah aplikasi toko online berbasis web yang dikembangkan sebagai proyek
 - **Database:** MySQL (konfigurasi SQLite juga tersedia sebagai default pada template `.env.example`)
 - **Frontend:** Blade, Vite, Tailwind CSS 4
 - **Pembayaran:** Midtrans Snap
-- **Data wilayah:** API Wilayah.id
+- **Data wilayah:** Dataset JSON lokal (38 provinsi dan 514 kabupaten/kota), sehingga dropdown alamat tidak bergantung pada API eksternal.
 
 ## Persyaratan
 
