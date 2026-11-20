@@ -301,7 +301,7 @@ class PaymentController extends Controller
             }
         }
 
-        // Verifikasi signature menggunakan Signature Key.
+        // Verifikasi signature menggunakan Server Key sesuai rumus resmi Midtrans.
         $expectedSignature = hash(
             'sha512',
             (string) $payload['order_id'] .
