@@ -3,6 +3,8 @@
 @section('title', $product->name . ' - Arbyte')
 
 @section('content')
+@include('layouts.partials.back-link', ['href' => route('storefront.products.index'), 'label' => 'Kembali ke Katalog'])
+
 <div class="breadcrumbs">
     <a href="{{ route('home') }}">Beranda</a>
     <span>/</span>
@@ -90,5 +92,4 @@
     </section>
 @endif
 
-@include('layouts.partials.back-link', ['href' => route('storefront.products.index'), 'label' => 'Kembali ke Katalog'])
 @endsection
