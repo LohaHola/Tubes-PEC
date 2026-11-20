@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\\Unit;
+namespace Tests\Unit;
 
-use App\\Services\\IndonesiaRegionService;
-use Tests\\TestCase;
+use App\Services\IndonesiaRegionService;
+use Tests\TestCase;
 
 class IndonesiaRegionServiceTest extends TestCase
 {
