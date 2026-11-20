@@ -274,13 +274,12 @@ class PaymentController extends Controller
 
     public function notification(Request $request): JsonResponse
     {
-        // Since 28 October 2026, Midtrans uses a separate Signature Secret Key
-        // for notification verification. The Server Key is only for API authorization.
-        $signatureSecretKey = (string) config('midtrans.signature_key');
+        // Midtrans notification signatures are calculated with the merchant Server Key.
+        $serverKey = (string) config('midtrans.server_key');
 
-        if ($signatureSecretKey === '') {
+        if ($serverKey === '') {
             return response()->json([
-                'message' => 'Payment signature configuration unavailable.',
+                'message' => 'Payment configuration unavailable.',
             ], 503);
         }
 
@@ -302,13 +301,13 @@ class PaymentController extends Controller
             }
         }
 
-        // Verifikasi signature menggunakan Signature Secret Key Midtrans.
+        // Verifikasi signature menggunakan Server Key sesuai rumus resmi Midtrans.
         $expectedSignature = hash(
             'sha512',
             (string) $payload['order_id'] .
             (string) $payload['status_code'] .
             (string) $payload['gross_amount'] .
-            $signatureSecretKey
+            $serverKey
         );
 
         $signatureValid = hash_equals(
