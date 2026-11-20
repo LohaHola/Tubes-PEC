@@ -7,7 +7,6 @@ return [
     'is_production' => (bool) env('MIDTRANS_IS_PRODUCTION', false),
     'is_sanitized' => (bool) env('MIDTRANS_IS_SANITIZED', true),
     'is_3ds' => (bool) env('MIDTRANS_IS_3DS', true),
-    'signature_key' => env('MIDTRANS_SIGNATURE_KEY'),
 
     'notification_url' => env('MIDTRANS_NOTIFICATION_URL'),
 ];
