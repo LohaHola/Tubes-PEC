@@ -79,6 +79,32 @@
             </p>
         @endif
 
+        @if (
+            $order->payment_status === 'pending' &&
+            $order->fulfillment_status === 'unprocessed' &&
+            $order->inventory_status === 'reserved'
+        )
+            <div style="margin-top:18px; padding-top:16px; border-top:1px solid #edf0f3;">
+                <form
+                    action="{{ route('customer.orders.cancel', $order) }}"
+                    method="POST"
+                    onsubmit="return confirm('Batalkan pesanan ini? Stok akan dikembalikan dan pembayaran yang masih aktif akan dibatalkan.')"
+                >
+                    @csrf
+                    <button
+                        type="submit"
+                        class="store-button button-light"
+                        style="border:1px solid #dc2626; color:#b91c1c; background:white;"
+                    >
+                        Batalkan Pesanan
+                    </button>
+                </form>
+                <p style="margin:8px 0 0; color:#64748b; font-size:12px; line-height:1.5;">
+                    Opsi ini hanya tersedia sebelum pembayaran berhasil dan pesanan mulai diproses.
+                </p>
+            </div>
+        @endif
+
     </div>
 
 </div>
