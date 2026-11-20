@@ -274,12 +274,12 @@ class PaymentController extends Controller
 
     public function notification(Request $request): JsonResponse
     {
-        // Midtrans notification signatures are calculated with the merchant Server Key.
-        $serverKey = (string) config('midtrans.server_key');
+        // Keep notification signature verification on the dedicated key used by this merchant.
+        $signatureKey = (string) config('midtrans.signature_key');
 
-        if ($serverKey === '') {
+        if ($signatureKey === '') {
             return response()->json([
-                'message' => 'Payment configuration unavailable.',
+                'message' => 'Payment signature configuration unavailable.',
             ], 503);
         }
 
@@ -301,13 +301,13 @@ class PaymentController extends Controller
             }
         }
 
-        // Verifikasi signature menggunakan Server Key sesuai rumus resmi Midtrans.
+        // Verifikasi signature menggunakan Signature Key yang dikonfigurasi untuk merchant.
         $expectedSignature = hash(
             'sha512',
             (string) $payload['order_id'] .
             (string) $payload['status_code'] .
             (string) $payload['gross_amount'] .
-            $serverKey
+            $signatureKey
         );
 
         $signatureValid = hash_equals(
