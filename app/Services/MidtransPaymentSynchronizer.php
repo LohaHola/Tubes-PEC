@@ -33,6 +33,16 @@ class MidtransPaymentSynchronizer
             return 'not_configured';
         }
 
+        $signatureKey = (string) config('midtrans.signature_key');
+
+        if ($signatureKey === '') {
+            Log::warning('Midtrans status sync skipped: signature key is not configured.', [
+                'order_id' => $order->order_number,
+            ]);
+
+            return 'signature_key_not_configured';
+        }
+
         $payment = $order->payments()
             ->where('provider', 'midtrans')
             ->whereNotNull('provider_order_id')
@@ -105,7 +115,7 @@ class MidtransPaymentSynchronizer
 
         $expectedSignature = hash(
             'sha512',
-            $providerOrderId . $statusCode . $grossAmount . $serverKey
+            $providerOrderId . $statusCode . $grossAmount . $signatureKey
         );
 
         if (
