@@ -131,7 +131,6 @@ Arbyte menggunakan Midtrans Snap. Tambahkan kredensial Sandbox pada file `.env` 
 ```env
 MIDTRANS_SERVER_KEY=
 MIDTRANS_CLIENT_KEY=
-MIDTRANS_SIGNATURE_KEY=
 MIDTRANS_IS_PRODUCTION=false
 MIDTRANS_IS_SANITIZED=true
 MIDTRANS_IS_3DS=true
@@ -144,7 +143,7 @@ Atur URL notifikasi (webhook) agar dapat dijangkau oleh server Midtrans. Endpoin
 POST /midtrans/notification
 ```
 
-Gunakan kredensial Sandbox selama pengembangan dan jangan pernah mengunggah file `.env`, server key, signature key, atau kredensial pembayaran ke repository.
+Webhook memverifikasi signature menggunakan `MIDTRANS_SERVER_KEY` sesuai rumus resmi Midtrans. Gunakan kredensial Sandbox selama pengembangan dan jangan pernah mengunggah file `.env`, server key, client key, atau kredensial pembayaran ke repository.
 
 ## Catatan
 
