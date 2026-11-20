@@ -85,10 +85,15 @@ class MidtransPaymentSynchronizer
         $fraudStatus = strtolower((string) ($payload['fraud_status'] ?? ''));
         $currency = strtoupper((string) ($payload['currency'] ?? 'IDR'));
 
+        $providerAmount = $this->amountToCents($grossAmount);
+        $localAmount = $this->amountToCents($payment->amount);
+
         if (
             $providerOrderId !== $payment->provider_order_id ||
             $currency !== 'IDR' ||
-            $this->amountToCents($grossAmount) !== $this->amountToCents($payment->amount)
+            $providerAmount === null ||
+            $localAmount === null ||
+            $providerAmount !== $localAmount
         ) {
             Log::warning('Midtrans status sync response did not match the local payment.', [
                 'order_id' => $order->order_number,
