@@ -1,8 +1,8 @@
 <?php
 
-namespace App\\Services;
+namespace App\Services;
 
-use Illuminate\\Support\\Collection;
+use Illuminate\Support\Collection;
 use RuntimeException;
 use Throwable;
 
