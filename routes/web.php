@@ -62,6 +62,7 @@ Route::middleware('auth')->group(function () {
 
     // Midtrans Payment
     Route::post('/orders/{order}/pay', [PaymentController::class, 'pay'])->name('customer.orders.pay');
+    Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('customer.orders.cancel');
     Route::get('/payments/finish', [PaymentController::class, 'finish'])->name('payment.finish');
 
     // Shopping Cart Routes
