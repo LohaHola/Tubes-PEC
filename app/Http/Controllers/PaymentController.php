@@ -274,9 +274,10 @@ class PaymentController extends Controller
 
     public function notification(Request $request): JsonResponse
     {
-        $signatureKey = (string) config('midtrans.signature_key');
+        // Midtrans generates the notification signature with the merchant Server Key.
+        $serverKey = (string) config('midtrans.server_key');
 
-        if ($signatureKey === '') {
+        if ($serverKey === '') {
             return response()->json([
                 'message' => 'Payment configuration unavailable.',
             ], 503);
@@ -306,7 +307,7 @@ class PaymentController extends Controller
             (string) $payload['order_id'] .
             (string) $payload['status_code'] .
             (string) $payload['gross_amount'] .
-            $signatureKey
+            $serverKey
         );
 
         $signatureValid = hash_equals(
@@ -425,16 +426,19 @@ class PaymentController extends Controller
 
             switch ($transactionStatus) {
                 case 'settlement':
-                    $paymentStatus = 'paid';
-                    $orderPaymentStatus = 'paid';
-                    break;
-
                 case 'capture':
-                    if ($fraudStatus === 'accept') {
+                    // A payment is successful only with status code 200.
+                    // Some payment channels omit fraud_status; when supplied,
+                    // Midtrans requires it to be ACCEPT.
+                    if (
+                        (string) $payload['status_code'] === '200' &&
+                        ($fraudStatus === '' || $fraudStatus === 'accept')
+                    ) {
                         $paymentStatus = 'paid';
                         $orderPaymentStatus = 'paid';
                     } else {
                         $paymentStatus = 'pending';
+                        $processingStatus = 'awaiting_payment_confirmation';
                     }
                     break;
 
@@ -500,8 +504,9 @@ class PaymentController extends Controller
             // A late pending/expiry notification must not reopen a customer-cancelled order.
             // A genuine success is still recorded so funds are never silently ignored.
             $confirmedSuccessfulPayment = (
-                $transactionStatus === 'settlement' ||
-                ($transactionStatus === 'capture' && $fraudStatus === 'accept')
+                (string) $payload['status_code'] === '200' &&
+                in_array($transactionStatus, ['settlement', 'capture'], true) &&
+                ($fraudStatus === '' || $fraudStatus === 'accept')
             );
 
             if (
