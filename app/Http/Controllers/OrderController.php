@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Services\MidtransPaymentSynchronizer;
 use App\Services\OrderCancellationService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -21,14 +22,24 @@ class OrderController extends Controller
         return view('storefront.orders.index', compact('orders'));
     }
 
-    public function show(Request $request, Order $order): View
-    {
+    public function show(
+        Request $request,
+        Order $order,
+        MidtransPaymentSynchronizer $synchronizer
+    ): View {
         abort_unless($request->user()->role === 'customer', 403);
 
         abort_unless(
             $order->user_id === $request->user()->id,
             404
         );
+
+        // Recover a paid transaction if Midtrans' HTTP notification was delayed
+        // or could not reach the local Ngrok/Laragon endpoint.
+        if ($order->payment_status === 'pending') {
+            $synchronizer->syncPaidStatus($order);
+            $order->refresh();
+        }
 
         $order->load('items');
 
