@@ -147,7 +147,7 @@ Webhook memverifikasi signature menggunakan `MIDTRANS_SERVER_KEY` sesuai rumus r
 
 ## Catatan
 
-- Data provinsi dan kabupaten/kota diambil dari Wilayah.id; pemuatan data memerlukan koneksi internet.
+- Data provinsi dan kabupaten/kota disimpan sebagai dataset JSON lokal agar dropdown alamat tidak bergantung pada API eksternal.
 - Dashboard menampilkan omzet dari pesanan yang sudah dibayar. Aplikasi belum menghitung laba bersih karena data HPP dan biaya operasional belum tersedia.
 - Sebelum digunakan pada lingkungan produksi, lakukan pengujian menyeluruh, atur HTTPS, backup database, dan tinjau konfigurasi keamanan serta pembayaran.
 
