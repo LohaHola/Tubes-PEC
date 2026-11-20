@@ -18,10 +18,6 @@
         </a>
     </div>
 
-    @if (session('status'))
-        <div class="alert alert-success">{{ session('status') }}</div>
-    @endif
-
     <form method="GET" action="{{ route('admin.products.index') }}"
           style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:20px;">
 
