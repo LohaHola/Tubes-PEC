@@ -1,60 +1,32 @@
 <?php
 
-namespace App\Services;
+namespace App\\Services;
 
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Http;
+use Illuminate\\Support\\Collection;
 use RuntimeException;
+use Throwable;
 
 class IndonesiaRegionService
 {
-    private const API_BASE = 'https://wilayah.id/api';
-
     public function provinces(): Collection
     {
-        return Cache::remember('indonesia-regions.wilayah-id.provinces', now()->addDays(7), function () {
-            $response = Http::acceptJson()
-                ->timeout(12)
-                ->retry(2, 250)
-                ->get(self::API_BASE . '/provinces.json');
-
-            $items = $response->json('data');
-
-            if (!$response->successful() || !is_array($items)) {
-                throw new RuntimeException('Data provinsi tidak dapat dimuat.');
-            }
-
-            return collect($items)
-                ->map(fn (array $item) => [
-                    'id' => (string) $item['code'],
-                    'name' => (string) $item['name'],
-                ])
-                ->values();
-        });
+        return collect($this->readDataset('indonesia-provinces.json'))
+            ->map(fn (array $item) => [
+                'id' => (string) $item['id'],
+                'name' => (string) $item['name'],
+            ])
+            ->values();
     }
 
     public function cities(string $provinceId): Collection
     {
-        return Cache::remember('indonesia-regions.wilayah-id.cities.' . $provinceId, now()->addDays(7), function () use ($provinceId) {
-            $response = Http::acceptJson()
-                ->timeout(12)
-                ->retry(2, 250)
-                ->get(self::API_BASE . '/regencies/' . rawurlencode($provinceId) . '.json');
-
-            $items = $response->json('data');
-
-            if (!$response->successful() || !is_array($items)) {
-                throw new RuntimeException('Data kota/kabupaten tidak dapat dimuat.');
-            }
-
-            return collect($items)
-                ->map(fn (array $item) => [
-                    'id' => (string) $item['code'],
-                    'name' => (string) $item['name'],
-                ])
-                ->values();
-        });
+        return collect($this->readDataset('indonesia-regencies.json'))
+            ->filter(fn (array $item) => (string) ($item['provinceId'] ?? '') === $provinceId)
+            ->map(fn (array $item) => [
+                'id' => (string) $item['id'],
+                'name' => (string) $item['name'],
+            ])
+            ->values();
     }
 
     public function findProvinceByName(?string $name): ?array
@@ -77,5 +49,31 @@ class IndonesiaRegionService
         return $this->cities($provinceId)->first(
             fn (array $city) => mb_strtolower($city['name']) === mb_strtolower(trim($name))
         );
+    }
+
+    /**
+     * Read bundled JSON data so address forms do not depend on a third-party API.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    private function readDataset(string $filename): array
+    {
+        $path = resource_path('data/' . $filename);
+
+        if (!is_file($path) || !is_readable($path)) {
+            throw new RuntimeException('File data wilayah tidak ditemukan: ' . $filename);
+        }
+
+        try {
+            $items = json_decode(file_get_contents($path), true, 512, JSON_THROW_ON_ERROR);
+        } catch (Throwable $exception) {
+            throw new RuntimeException('File data wilayah tidak dapat dibaca: ' . $filename, previous: $exception);
+        }
+
+        if (!is_array($items)) {
+            throw new RuntimeException('Format file data wilayah tidak valid: ' . $filename);
+        }
+
+        return $items;
     }
 }
